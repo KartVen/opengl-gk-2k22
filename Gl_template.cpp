@@ -56,7 +56,7 @@ void refreshTimer(int);
 void normalKeys(unsigned char key, int x, int y);
 void specialKeys(int key, int x, int y);
 
-void coordinateAxis(bool x, bool y, bool z);
+void coordinateAxis(bool x, bool y, bool z, double length, bool arrows);
 
 /* Project implementation */
 
@@ -118,7 +118,7 @@ void renderScene() {
     // MIEJSCE NA KOD OPENGL DO TWORZENIA WLASNYCH SCEN:		   //
     /////////////////////////////////////////////////////////////////
 
-	coordinateAxis(1,1,1);
+	coordinateAxis(1,1,1, 1000, 0);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -201,31 +201,52 @@ void specialKeys(int key, int x, int y) {
     glutPostRedisplay();
 }
 
-void coordinateAxis(bool x, bool y, bool z) {
-	if (x) {
-		// xAxis
-		glBegin(GL_LINES);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3d(0, 0, 0);
-		glVertex3d(5000, 0, 0);
-		glEnd();
-	}
-	if (y) {
-		// yAxis
-		glBegin(GL_LINES);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3d(0, 0, 0);
-		glVertex3d(0, 5000, 0);
-		glEnd();
-	}
-	if (z) {
-		// zAxis
-		glBegin(GL_LINES);
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3d(0, 0, 0);
-		glVertex3d(0, 0, 5000);
-		glEnd();
-	}
+void coordinateAxis(bool x, bool y, bool z, double length, bool arrows) {
+    if (x) {
+        // xAxis - red
+        glColor3f(1.0, 0.0, 0.0);
+        glBegin(GL_LINES);
+        glVertex3f(0, 0.0f, 0.0f);
+        glVertex3f(length, 0.0f, 0.0f);
+        if (arrows) {
+            glVertex3f(length, 0.0f, 0.0f);
+            glVertex3f(0.95 * length, 0.05 * length, 0.0f);
+            glVertex3f(length, 0.0f, 0.0f);
+            glVertex3f(0.95 * length, -0.05 * length, 0.0f);
+            glEnd();
+            glFlush();
+        }
+    }
+    if (y) {
+        // yAxis - green
+        glColor3f(0.0, 1.0, 0.0);
+        glBegin(GL_LINES);
+        glVertex3f(0.0, 0, 0.0f);
+        glVertex3f(0.0, length, 0.0f);
+        if (arrows) {
+            glVertex3f(0.0, length, 0.0f);
+            glVertex3f(0.05 * length, 0.95 * length, 0.0f);
+            glVertex3f(0.0, length, 0.0f);
+            glVertex3f(-0.05 * length, 0.95 * length, 0.0f);
+            glEnd();
+            glFlush();
+        }
+    }
+    if (z) {
+        // zAxis - blue
+        glColor3f(0.0, 0.0, 1.0);
+        glBegin(GL_LINES);
+        glVertex3f(0.0, 0.0f, 0);
+        glVertex3f(0.0, 0.0f, length);
+        if (arrows) {
+            glVertex3f(0.0, 0.0f, length);
+            glVertex3f(0.0, 0.05 * length, 0.95 * length);
+            glVertex3f(0.0, 0.0f, length);
+            glVertex3f(0.0, -0.05 * length, 0.95 * length);
+            glEnd();
+            glFlush();
+        }
+    }
 }
 
 void runView() {
