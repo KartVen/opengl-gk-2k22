@@ -10,7 +10,7 @@ Cuboid::Cuboid(Position pos, Size size, Color color, bool center){
 
 
 void Cuboid::draw(Position pos) {
-	Position drawPos = this->pos + pos;
+	Position drawPos = { this->pos.x + pos.x, this->pos.y + pos.y, this->pos.z + pos.z };
 	if (center) drawPos = { drawPos.x - size.x / 2, drawPos.y - size.y / 2 , drawPos.z - size.z / 2 };
 	int layerDensityScale = 2;
 	int doubleTrianglesDensityScale = 10;

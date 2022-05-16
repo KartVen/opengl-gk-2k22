@@ -22,6 +22,7 @@
 #include <cmath>				// Define for sqrt
 #include <stdio.h>
 #include <string>
+#include "CONFIG.h"
 #include "CombineRobot.h"
 #include <iostream>
 #include "Event.h"
@@ -48,16 +49,11 @@ static GLsizei lastWidth;
 // Texture description
 BITMAPINFOHEADER bitmapInfoHeader;	// image header
 unsigned char* bitmapData;			// texture data
-unsigned int texture[2];			// texture object
+unsigned int texture[2];	// texture object
 
 void renderScene();
 void changeSize(int, int);
 void refreshTimer(int);
-
-void normalKeysDown(unsigned char key, int x, int y);
-void normalKeysUp(unsigned char key, int x, int y);
-void specialKeys(int key, int x, int y);
-void updateView(void);
 
 void coordinateAxis(bool x, bool y, bool z, double length, bool arrows);
 
@@ -66,6 +62,7 @@ void coordinateAxis(bool x, bool y, bool z, double length, bool arrows);
 Event* event;
 CombineRobot* combineRobot;
 
+void updateView(void);
 void drawView();
 
 /* ---------------------- */
@@ -75,8 +72,8 @@ int main(int argc, char *argv[]) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
 
-	int w = 1600;
-	int h = 900;
+	int w = WINDOW_WIDTH;
+	int h = WINDOW_HEIGHT;
 	int screenWidth = glutGet(GLUT_SCREEN_WIDTH);
 	int screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
 	glutInitWindowPosition((screenWidth - w) / 2, (screenHeight - h) / 2);
@@ -84,19 +81,21 @@ int main(int argc, char *argv[]) {
 
 	glutCreateWindow(lpszAppName);
 
+    event = new Event();
+
     glutDisplayFunc(renderScene);
     glutReshapeFunc(changeSize);
-    //glutTimerFunc(0,refreshTimer,0);
+    glutTimerFunc(0,refreshTimer,0);
 
-    glutKeyboardFunc(normalKeysDown);
-    glutKeyboardUpFunc(normalKeysUp);
-    glutSpecialFunc(specialKeys);
+    glutKeyboardFunc([](unsigned char key, int x, int y) { event->keyboard.basicKeysDown(key, x, y); });
+    glutKeyboardUpFunc([](unsigned char key, int x, int y) { event->keyboard.basicKeysUp(key, x, y); });
+    glutSpecialFunc([](int key, int x, int y) { event->keyboard.specialKeysDown(key, x, y); });
+    glutSpecialUpFunc([](int key, int x, int y) { event->keyboard.specialKeysUp(key, x, y); });
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
     combineRobot = new CombineRobot();
-    event = new Event();
 
     glutMainLoop();
 
@@ -147,7 +146,7 @@ void renderScene() {
 }
 
 void changeSize(int w, int h) {
-    GLfloat nRange = 500.0f;
+    GLfloat nRange = RANGE;
     GLfloat fAspect;
     // Prevent a divide by zero
     if (h == 0)
@@ -180,45 +179,9 @@ void changeSize(int w, int h) {
 
 void refreshTimer(int) {
 	glutPostRedisplay();
-	glutTimerFunc(1000 / 60, refreshTimer, 0);
+	glutTimerFunc(1000 / FPS, refreshTimer, 0);
 }
 
-void normalKeysDown(unsigned char key, int x, int y) {
-
-    if (key == 'w') event->keyboard.key_w.state = true;
-    if (key == 's') event->keyboard.key_s.state = true;
-    if (key == 'a') event->keyboard.key_a.state = true;
-    if (key == 'd') event->keyboard.key_d.state = true;
-
-    glutPostRedisplay();
-}
-
-void normalKeysUp(unsigned char key, int x, int y) {
-
-    if (key == 'w') event->keyboard.key_w.state = false;
-    if (key == 's') event->keyboard.key_s.state = false;
-    if (key == 'a') event->keyboard.key_a.state = false;
-    if (key == 'd') event->keyboard.key_d.state = false;
-
-    glutPostRedisplay();
-}
-
-void specialKeys(int key, int x, int y) {
-
-    if (key == GLUT_KEY_UP)
-        xRot -= 5.0f;
-    if (key == GLUT_KEY_DOWN)
-        xRot += 5.0f;
-    if (key == GLUT_KEY_LEFT)
-        yRot -= 5.0f;
-    if (key == GLUT_KEY_RIGHT)
-        yRot += 5.0f;
-
-    xRot = (const int)xRot % 360;
-    yRot = (const int)yRot % 360;
-
-    glutPostRedisplay();
-}
 
 void coordinateAxis(bool x, bool y, bool z, double length, bool arrows) {
     if (x) {
@@ -269,23 +232,37 @@ void coordinateAxis(bool x, bool y, bool z, double length, bool arrows) {
 }
 
 void updateView() {
-    GLdouble moveStep = 1;
+    GLdouble moveStep = 10 / FPS;
+    GLfloat angleStep = 4 / FPS;
 
-    if (event->keyboard.key_w.isPressed()){
-        //combineRobot->move(moveStep, 0);
-        std::cout << event->keyboard.key_w.name << ":" << event->keyboard.key_w.state << '\n';
+    if (event->keyboard.key_up.isPressed()){
+        xRot -= angleStep;
+        xRot = (const int)(100 * xRot) % 36000 * .01f;
     }
-    if (event->keyboard.key_a.isPressed()) {
-        //combineRobot->move(-moveStep, 0);
-        std::cout << event->keyboard.key_a.name << ":" << event->keyboard.key_a.state << '\n';
+    if (event->keyboard.key_down.isPressed()) {
+        xRot += angleStep;
+        xRot = (const int)(100 * xRot) % 36000 * .01f;
     }
-    if (event->keyboard.key_s.isPressed()) {
-        //combineRobot->move(0, moveStep);
-        std::cout << event->keyboard.key_s.name << ":" << event->keyboard.key_s.state << '\n';
+    if (event->keyboard.key_left.isPressed()) {
+        yRot -= angleStep;
+        yRot = (const int)(100 * yRot) % 36000 * .01f;
     }
-    if (event->keyboard.key_d.isPressed()) {
-        //combineRobot->move(0, -moveStep);
-        std::cout << event->keyboard.key_d.name << ":" << event->keyboard.key_d.state << '\n';
+    if (event->keyboard.key_right.isPressed()) {
+        yRot += angleStep;
+        yRot = (const int)(100 * yRot) % 36000 * .01f;
+    }
+
+    if (event->keyboard.key_w.isPressed() && !event->keyboard.key_s.isPressed()) {
+        combineRobot->move(moveStep * 2, 0);
+    }
+    if (event->keyboard.key_s.isPressed() && !event->keyboard.key_w.isPressed()) {
+        combineRobot->move(-moveStep * 2, 0);
+    }
+    if (event->keyboard.key_a.isPressed() && !event->keyboard.key_d.isPressed()) {
+        combineRobot->move(0, -moveStep);
+    }
+    if (event->keyboard.key_d.isPressed() && !event->keyboard.key_a.isPressed()) {
+        combineRobot->move(0, moveStep);
     }
 
     glutPostRedisplay();

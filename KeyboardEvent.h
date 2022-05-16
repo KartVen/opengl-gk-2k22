@@ -4,10 +4,8 @@
  * Structure handlingteh information about single keyboard's key
  */
 typedef struct Key {
-	char name;
 	bool state = false;
 	bool isPressed();
-	Key(char name);
 } Key;
 
 
@@ -20,9 +18,17 @@ private:
 	friend class Event;
 	~KeyboardEvent() = default;
 public:
-	Key key_a{ 'A' };
-	Key key_d{ 'D' };
-	Key key_s{ 'S' };
-	Key key_w{ 'W' };
+	Key key_a;
+	Key key_d;
+	Key key_s;
+	Key key_w;
+	Key key_up;
+	Key key_down;
+	Key key_left;
+	Key key_right;
+	void basicKeysDown(unsigned char key, int x, int y);
+	void basicKeysUp(unsigned char key, int x, int y);
+	void specialKeysDown(int key, int x, int y);
+	void specialKeysUp(int key, int x, int y);
 };
 

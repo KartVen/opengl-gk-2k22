@@ -27,6 +27,8 @@ private:
     std::vector<Wheel*> frontWheelPart;
     std::vector<Wheel*> backWheelPart;
 
+    int called = 0;
+
 public:
     CombineRobot(GLfloat x = 0, GLfloat y = 0, GLfloat z = 0);
     ~CombineRobot();

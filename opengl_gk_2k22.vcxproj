@@ -165,6 +165,7 @@
   <ItemGroup>
     <ClInclude Include="Blocks.h" />
     <ClInclude Include="CombineRobot.h" />
+    <ClInclude Include="CONFIG.h" />
     <ClInclude Include="Cuboid.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Event.h" />

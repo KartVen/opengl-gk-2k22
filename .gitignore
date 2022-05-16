@@ -1,3 +1,5 @@
 .vs
 Debug
 *.user
+x32
+x64

@@ -1,4 +1,5 @@
 #include "CombineRobot.h"
+#include <iostream>
 
 CombineRobot::CombineRobot(GLfloat x, GLfloat y, GLfloat z) {
 	pos = { x,y,z };
@@ -135,7 +136,6 @@ CombineRobot::~CombineRobot() {
 	for (auto& frontWheelSingle : frontWheelPart) delete frontWheelSingle;
 	for (auto& backWheelSingle : backWheelPart) delete backWheelSingle;
 }
-
 void CombineRobot::draw() {
 	glPushMatrix();
 	glTranslatef(-size.x / 2, -size.y / 2, 0);
@@ -148,5 +148,6 @@ void CombineRobot::draw() {
 	glPopMatrix();
 }
 void CombineRobot::move(GLdouble x, GLdouble y) {
-	pos = { pos.x - x,pos.y + y,pos.z };
+	pos.x -= x;
+	pos.y += y;
 }

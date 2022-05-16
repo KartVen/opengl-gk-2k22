@@ -26,7 +26,7 @@ void Cylinder::setAxe(char startAxe) {
 
 void Cylinder::draw(Position pos)
 {
-	Position drawPos = this->pos + pos;
+	Position drawPos = { this->pos.x + pos.x, this->pos.y + pos.y, this->pos.z + pos.z };
 	int trianglesInCircleAmount = density - density % 2;
 	float triangleSectorScale = sectorScale;
 
