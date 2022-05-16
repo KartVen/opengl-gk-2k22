@@ -9,6 +9,6 @@ public:
     bool center;
     Cuboid(Position pos, Size size, Color color, bool center = false);
     ~Cuboid() = default;
-    void draw();
+    void draw(Position pos = { 0,0,0 });
 };
 

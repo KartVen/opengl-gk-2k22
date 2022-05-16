@@ -1,5 +1,12 @@
 #include "Blocks.h"
 
+Position& Position::operator+(Position value) {
+	x += value.x;
+	y += value.y;
+	z += value.z;
+	return *this;
+}
+
 Size& Size::operator*(double value) {
 	x *= value;
 	y *= value;

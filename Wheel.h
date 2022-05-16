@@ -5,6 +5,6 @@ class Wheel :
 {
 public:
     Wheel(Position center, Size2 size, Color color, char startAxe = 'z');
-    void draw();
+    void draw(Position pos = { 0,0,0 });
 };
 

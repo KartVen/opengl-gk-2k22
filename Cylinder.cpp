@@ -24,8 +24,9 @@ void Cylinder::setAxe(char startAxe) {
 	this->startAxe = startAxe;
 }
 
-void Cylinder::draw()
+void Cylinder::draw(Position pos)
 {
+	Position drawPos = this->pos + pos;
 	int trianglesInCircleAmount = density - density % 2;
 	float triangleSectorScale = sectorScale;
 
@@ -33,12 +34,12 @@ void Cylinder::draw()
 
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3f(color.r, color.g, color.b);
-		glVertex3f(pos.x, pos.y, pos.z);
+		glVertex3f(drawPos.x, drawPos.y, drawPos.z);
 		for (double i = 0; i <= triangleSectorScale * trianglesInCircleAmount; ++i)
 		{
 			double y = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double z = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(pos.x, y + pos.y, z + pos.z);
+			glVertex3f(drawPos.x, y + drawPos.y, z + drawPos.z);
 		}
 		glEnd();
 
@@ -48,19 +49,19 @@ void Cylinder::draw()
 		{
 			double y = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double z = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(pos.x, y + pos.y, z + pos.z);
-			glVertex3f(pos.x + size.h, y + pos.y, z + pos.z);
+			glVertex3f(drawPos.x, y + drawPos.y, z + drawPos.z);
+			glVertex3f(drawPos.x + size.h, y + drawPos.y, z + drawPos.z);
 		}
 		glEnd();
 
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3f(color.r, color.g, color.b);
-		glVertex3f(pos.x + size.h, pos.y, pos.z);
+		glVertex3f(drawPos.x + size.h, drawPos.y, drawPos.z);
 		for (double i = 0; i <= triangleSectorScale * trianglesInCircleAmount; ++i)
 		{
 			double y = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double z = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(pos.x + size.h, y + pos.y, z + pos.z);
+			glVertex3f(drawPos.x + size.h, y + drawPos.y, z + drawPos.z);
 		}
 		glEnd();
 
@@ -70,12 +71,12 @@ void Cylinder::draw()
 
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3f(color.r, color.g, color.b);
-		glVertex3f(pos.x, pos.y, pos.z);
+		glVertex3f(drawPos.x, drawPos.y, drawPos.z);
 		for (double i = 0; i <= triangleSectorScale * trianglesInCircleAmount; ++i)
 		{
 			double x = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double z = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(x + pos.x, pos.y, z + pos.z);
+			glVertex3f(x + drawPos.x, drawPos.y, z + drawPos.z);
 		}
 		glEnd();
 
@@ -85,19 +86,19 @@ void Cylinder::draw()
 		{
 			double x = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double z = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(x + pos.x, pos.y, z + pos.z);
-			glVertex3f(x + pos.x, pos.y + size.h, z + pos.z);
+			glVertex3f(x + drawPos.x, drawPos.y, z + drawPos.z);
+			glVertex3f(x + drawPos.x, drawPos.y + size.h, z + drawPos.z);
 		}
 		glEnd();
 
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3f(color.r, color.g, color.b);
-		glVertex3f(pos.x, pos.y + size.h, pos.z);
+		glVertex3f(drawPos.x, drawPos.y + size.h, drawPos.z);
 		for (double i = 0; i <= triangleSectorScale * trianglesInCircleAmount; ++i)
 		{
 			double x = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double z = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(x + pos.x, pos.y + size.h, z + pos.z);
+			glVertex3f(x + drawPos.x, drawPos.y + size.h, z + drawPos.z);
 		}
 		glEnd();
 
@@ -106,12 +107,12 @@ void Cylinder::draw()
 
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3f(color.r, color.g, color.b);
-		glVertex3f(pos.x, pos.y, pos.z);
+		glVertex3f(drawPos.x, drawPos.y, drawPos.z);
 		for (double i = 0; i <= triangleSectorScale * trianglesInCircleAmount; ++i)
 		{
 			double x = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double y = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(x + pos.x, y + pos.y, pos.z);
+			glVertex3f(x + drawPos.x, y + drawPos.y, drawPos.z);
 		}
 		glEnd();
 
@@ -121,19 +122,19 @@ void Cylinder::draw()
 		{
 			double x = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double y = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(x + pos.x, y + pos.y, pos.z);
-			glVertex3f(x + pos.x, y + pos.y, pos.z + size.h);
+			glVertex3f(x + drawPos.x, y + drawPos.y, drawPos.z);
+			glVertex3f(x + drawPos.x, y + drawPos.y, drawPos.z + size.h);
 		}
 		glEnd();
 
 		glBegin(GL_TRIANGLE_FAN);
 		glColor3f(color.r, color.g, color.b);
-		glVertex3f(pos.x, pos.y, pos.z + size.h);
+		glVertex3f(drawPos.x, drawPos.y, drawPos.z + size.h);
 		for (double i = 0; i <= triangleSectorScale * trianglesInCircleAmount; ++i)
 		{
 			double x = size.r * sin(i * (PI * 2) / trianglesInCircleAmount);
 			double y = size.r * cos(i * (PI * 2) / trianglesInCircleAmount);
-			glVertex3f(x + pos.x, y + pos.y, pos.z + size.h);
+			glVertex3f(x + drawPos.x, y + drawPos.y, drawPos.z + size.h);
 		}
 		glEnd();
 

@@ -2,11 +2,9 @@
 
 Wheel::Wheel(Position center, Size2 size, Color color, char startAxe):
 	Cylinder(center, size, color, startAxe)
-{
+{}
 
-}
-
-void Wheel::draw()
+void Wheel::draw(Position pos)
 {
-	Cylinder::draw();
+	Cylinder::draw(pos);
 }

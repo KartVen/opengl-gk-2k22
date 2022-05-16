@@ -9,8 +9,9 @@ Cuboid::Cuboid(Position pos, Size size, Color color, bool center){
 }
 
 
-void Cuboid::draw() {
-	if (center) pos = { pos.x - size.x / 2, pos.y - size.y / 2 , pos.z - size.z / 2 };
+void Cuboid::draw(Position pos) {
+	Position drawPos = this->pos + pos;
+	if (center) drawPos = { drawPos.x - size.x / 2, drawPos.y - size.y / 2 , drawPos.z - size.z / 2 };
 	int layerDensityScale = 2;
 	int doubleTrianglesDensityScale = 10;
 
@@ -23,8 +24,8 @@ void Cuboid::draw() {
 			glBegin(GL_TRIANGLE_STRIP);
 			glColor3f(color.r, color.g, color.b);
 			for (double z = 0; z <= doubleTrianglesDensityScale; ++z) {
-				glVertex3f(x * layerWidth + pos.x, y + pos.y, z * axisStep + pos.z);
-				glVertex3f(x * layerWidth + pos.x + layerWidth, y + pos.y, z * axisStep + pos.z);
+				glVertex3f(x * layerWidth + drawPos.x, y + drawPos.y, z * axisStep + drawPos.z);
+				glVertex3f(x * layerWidth + drawPos.x + layerWidth, y + drawPos.y, z * axisStep + drawPos.z);
 			}
 			glEnd();
 		}
@@ -38,8 +39,8 @@ void Cuboid::draw() {
 			glBegin(GL_TRIANGLE_STRIP);
 			glColor3f(color.r, color.g, color.b);
 			for (double z = 0; z <= doubleTrianglesDensityScale; ++z) {
-				glVertex3f(x + pos.x, y * layerWidth + pos.y, z * axisStep + pos.z);
-				glVertex3f(x + pos.x, y * layerWidth + pos.y + layerWidth, z * axisStep + pos.z);
+				glVertex3f(x + drawPos.x, y * layerWidth + drawPos.y, z * axisStep + drawPos.z);
+				glVertex3f(x + drawPos.x, y * layerWidth + drawPos.y + layerWidth, z * axisStep + drawPos.z);
 			}
 			glEnd();
 		}
@@ -54,8 +55,8 @@ void Cuboid::draw() {
 				glBegin(GL_TRIANGLE_STRIP);
 				glColor3f(color.r, color.g, color.b);
 				for (double x = 0; x <= doubleTrianglesDensityScale; ++x) {
-					glVertex3f(x * axisStep + pos.x, y * layerWidth + pos.y, z + pos.z);
-					glVertex3f(x * axisStep + pos.x, y * layerWidth + pos.y + layerWidth, z + pos.z);
+					glVertex3f(x * axisStep + drawPos.x, y * layerWidth + drawPos.y, z + drawPos.z);
+					glVertex3f(x * axisStep + drawPos.x, y * layerWidth + drawPos.y + layerWidth, z + drawPos.z);
 				}
 				glEnd();
 			}
@@ -70,8 +71,8 @@ void Cuboid::draw() {
 				glBegin(GL_TRIANGLE_STRIP);
 				glColor3f(color.r, color.g, color.b);
 				for (double y = 0; y <= doubleTrianglesDensityScale; ++y) {
-					glVertex3f(x * layerWidth + pos.x, y * axisStep + pos.y, z + pos.z);
-					glVertex3f(x * layerWidth + pos.x + layerWidth, y * axisStep + pos.y, z + pos.z);
+					glVertex3f(x * layerWidth + drawPos.x, y * axisStep + drawPos.y, z + drawPos.z);
+					glVertex3f(x * layerWidth + drawPos.x + layerWidth, y * axisStep + drawPos.y, z + drawPos.z);
 				}
 				glEnd();
 			}

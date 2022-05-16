@@ -6,6 +6,7 @@
 
 struct Position {
 	GLdouble x = 0, y = 0, z = 0;
+	Position& operator+(Position value);
 };
 
 struct Size {
@@ -38,6 +39,6 @@ public:
 	Color color;
 	Rotation rotation;
 
-	virtual void draw() = 0;
+	virtual void draw(Position pos = { 0,0,0 }) = 0;
 };
 

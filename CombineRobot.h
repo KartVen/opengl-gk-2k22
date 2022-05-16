@@ -2,13 +2,13 @@
 #include "Cylinder.h"
 #include <vector>
 #include "Wheel.h"
+#include "Event.h"
 
 #pragma once
 
 class CombineRobot {
 public:
     Position pos;
-    Position relPos;
 private:
     Size size;
     Color basicColor;
@@ -31,4 +31,5 @@ public:
     CombineRobot(GLfloat x = 0, GLfloat y = 0, GLfloat z = 0);
     ~CombineRobot();
     void draw();
+    void move(GLdouble x, GLdouble y);
 };

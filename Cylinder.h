@@ -1,5 +1,7 @@
 #pragma once
 #include "Blocks.h"
+
+
 class Cylinder :
     public Blocks
 {
@@ -12,6 +14,6 @@ public:
     Cylinder(Position center, Size2 size, Color color, char startAxe, int density = 40, float sectorScale = 1.0);
     ~Cylinder() = default;
     void setAxe(char axe);
-    void draw();
+    void draw(Position pos = { 0,0,0 });
 };
 
