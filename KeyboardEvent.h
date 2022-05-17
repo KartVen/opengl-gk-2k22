@@ -1,13 +1,5 @@
 #pragma once
-
-/**
- * Structure handlingteh information about single keyboard's key
- */
-typedef struct Key {
-	bool state = false;
-	bool isPressed();
-} Key;
-
+#include "Key.h"
 
 /**
  * Class holding the states of the keyboard keys
@@ -16,6 +8,7 @@ class KeyboardEvent
 {
 private:
 	friend class Event;
+	KeyboardEvent() = default;
 	~KeyboardEvent() = default;
 public:
 	Key key_a;
@@ -26,9 +19,9 @@ public:
 	Key key_down;
 	Key key_left;
 	Key key_right;
-	void basicKeysDown(unsigned char key, int x, int y);
-	void basicKeysUp(unsigned char key, int x, int y);
-	void specialKeysDown(int key, int x, int y);
-	void specialKeysUp(int key, int x, int y);
+	void basicHandleDown(unsigned char key, int x, int y);
+	void basicHandleUp(unsigned char key, int x, int y);
+	void specialHandleDown(int key, int x, int y);
+	void specialHandleUp(int key, int x, int y);
 };
 

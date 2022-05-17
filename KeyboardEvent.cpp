@@ -1,11 +1,7 @@
 #include "KeyboardEvent.h"
 #include <GL/freeglut_std.h>
 
-bool Key::isPressed() {
-	return state;
-}
-
-void KeyboardEvent::basicKeysDown(unsigned char key, int x, int y) {
+void KeyboardEvent::basicHandleDown(unsigned char key, int x, int y) {
 
 	if (key == 'w') key_w.state = true;
 	if (key == 's') key_s.state = true;
@@ -14,7 +10,7 @@ void KeyboardEvent::basicKeysDown(unsigned char key, int x, int y) {
 
 }
 
-void KeyboardEvent::basicKeysUp(unsigned char key, int x, int y) {
+void KeyboardEvent::basicHandleUp(unsigned char key, int x, int y) {
 
 	if (key == 'w') key_w.state = false;
 	if (key == 's') key_s.state = false;
@@ -23,7 +19,7 @@ void KeyboardEvent::basicKeysUp(unsigned char key, int x, int y) {
 
 }
 
-void KeyboardEvent::specialKeysDown(int key, int x, int y) {
+void KeyboardEvent::specialHandleDown(int key, int x, int y) {
 
 	if (key == GLUT_KEY_UP) key_up.state = true;
 	if (key == GLUT_KEY_DOWN) key_down.state = true;
@@ -32,19 +28,11 @@ void KeyboardEvent::specialKeysDown(int key, int x, int y) {
 
 }
 
-void KeyboardEvent::specialKeysUp(int key, int x, int y) {
+void KeyboardEvent::specialHandleUp(int key, int x, int y) {
 
 	if (key == GLUT_KEY_UP) key_up.state = false;
 	if (key == GLUT_KEY_DOWN) key_down.state = false;
 	if (key == GLUT_KEY_LEFT) key_left.state = false;
 	if (key == GLUT_KEY_RIGHT) key_right.state = false;
 
-	/*if (key == GLUT_KEY_UP) xRot -= 5.0f;
-	if (key == GLUT_KEY_DOWN) xRot += 5.0f;
-	if (key == GLUT_KEY_LEFT) yRot -= 5.0f;
-	if (key == GLUT_KEY_RIGHT) yRot += 5.0f;
-
-	xRot = (const int)xRot % 360;
-	yRot = (const int)yRot % 360;
-	*/
 }

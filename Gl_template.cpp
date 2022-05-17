@@ -23,9 +23,9 @@
 #include <stdio.h>
 #include <string>
 #include "CONFIG.h"
+#include "Event.h"
 #include "CombineRobot.h"
 #include <iostream>
-#include "Event.h"
 
 #define glRGB(x, y, z)	glColor3ub((GLubyte)x, (GLubyte)y, (GLubyte)z)
 #define BITMAP_ID 0x4D42		// BMP format ID
@@ -59,6 +59,15 @@ void coordinateAxis(bool x, bool y, bool z, double length, bool arrows);
 
 /* Project implementation */
 
+#define normalizeAngle(angle) ((int)(100 * angle) % 36000 * .01f)
+
+static GLfloat cameraX = BASE_CAMERA_X;
+static GLfloat cameraY = BASE_CAMERA_Y;
+static GLfloat cameraZ = BASE_CAMERA_Z;
+static int cameraDistanceScale = 0;
+
+void reloadCameraView();
+
 Event* event;
 CombineRobot* combineRobot;
 
@@ -87,10 +96,11 @@ int main(int argc, char *argv[]) {
     glutReshapeFunc(changeSize);
     glutTimerFunc(0,refreshTimer,0);
 
-    glutKeyboardFunc([](unsigned char key, int x, int y) { event->keyboard.basicKeysDown(key, x, y); });
-    glutKeyboardUpFunc([](unsigned char key, int x, int y) { event->keyboard.basicKeysUp(key, x, y); });
-    glutSpecialFunc([](int key, int x, int y) { event->keyboard.specialKeysDown(key, x, y); });
-    glutSpecialUpFunc([](int key, int x, int y) { event->keyboard.specialKeysUp(key, x, y); });
+    glutKeyboardFunc([](unsigned char key, int x, int y) { event->keyboard.basicHandleDown(key, x, y); });
+    glutKeyboardUpFunc([](unsigned char key, int x, int y) { event->keyboard.basicHandleUp(key, x, y); });
+    glutSpecialFunc([](int key, int x, int y) { event->keyboard.specialHandleDown(key, x, y); });
+    glutSpecialUpFunc([](int key, int x, int y) { event->keyboard.specialHandleUp(key, x, y); });
+    glutMouseFunc([](int button, int state, int x, int y) { event->mouse.mouseHandle(button, state, x, y); });
     
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -128,6 +138,7 @@ void renderScene() {
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+    updateView();
     drawView();
 
     // Drawing a rectangle
@@ -146,7 +157,7 @@ void renderScene() {
 }
 
 void changeSize(int w, int h) {
-    GLfloat nRange = RANGE;
+    GLfloat nRange = BASE_RANGE;
     GLfloat fAspect;
     // Prevent a divide by zero
     if (h == 0)
@@ -165,23 +176,31 @@ void changeSize(int w, int h) {
 
     // Establish clipping volume (left, right, bottom, top, near, far)
     
-	if (w <= h)
-		glOrtho(-nRange, nRange, -nRange * h / w, nRange * h / w, -nRange, nRange);
-    else
-        glOrtho(-nRange * w / h, nRange * w / h, -nRange, nRange, -nRange, nRange);
-    
-    // Establish perspective: 
-    //gluPerspective(60.0f,fAspect,1.0,1000);
+    if (CAMERA_MODE) {
 
-    glMatrixMode(GL_MODELVIEW);
-    //glLoadIdentity();
+        // Establish perspective: 
+        gluPerspective(60.0f, fAspect, 10.0, 1000);
+
+        //gluLookAt(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+        gluLookAt(cameraX, cameraY, cameraZ, 0, 0, 0, 0, 0, 1);
+
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+    }
+    else {
+
+        if (w <= h) glOrtho(-nRange, nRange, -nRange * h / w, nRange * h / w, -nRange, nRange);
+        else glOrtho(-nRange * w / h, nRange * w / h, -nRange, nRange, -nRange, nRange);
+        glMatrixMode(GL_MODELVIEW);
+
+    }
 }
 
 void refreshTimer(int) {
 	glutPostRedisplay();
 	glutTimerFunc(1000 / FPS, refreshTimer, 0);
 }
-
 
 void coordinateAxis(bool x, bool y, bool z, double length, bool arrows) {
     if (x) {
@@ -231,37 +250,62 @@ void coordinateAxis(bool x, bool y, bool z, double length, bool arrows) {
     }
 }
 
+void reloadCameraView() {
+    if (CAMERA_MODE) {
+        if (cameraDistanceScale > MAX_CAMERA_DISTANCE_SCALE) cameraDistanceScale = MAX_CAMERA_DISTANCE_SCALE;
+        if (cameraDistanceScale < MIN_CAMERA_DISTANCE_SCALE) cameraDistanceScale = MIN_CAMERA_DISTANCE_SCALE;
+        cameraZ = BASE_CAMERA_Z + CAMERA_DISTANCE_STEP * cameraDistanceScale;
+        cameraX = cameraZ * BASE_CAMERA_X / BASE_CAMERA_Z;
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        gluPerspective(60.0f, (GLfloat)lastWidth / (GLfloat)lastHeight, 10.0, 1000);
+        gluLookAt(cameraX, cameraY, cameraZ, 0, 0, 0, 0, 0, 1);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+    }
+}
+
 void updateView() {
     GLdouble moveStep = 10 / FPS;
     GLfloat angleStep = 4 / FPS;
 
-    if (event->keyboard.key_up.isPressed()){
+    if (event->keyboard.key_left.isScrolled()) {
         xRot -= angleStep;
-        xRot = (const int)(100 * xRot) % 36000 * .01f;
+        xRot = normalizeAngle(xRot);
     }
-    if (event->keyboard.key_down.isPressed()) {
+    if (event->keyboard.key_right.isScrolled()) {
         xRot += angleStep;
-        xRot = (const int)(100 * xRot) % 36000 * .01f;
+        xRot = normalizeAngle(xRot);
     }
-    if (event->keyboard.key_left.isPressed()) {
+    if (event->keyboard.key_up.isScrolled()) {
         yRot -= angleStep;
-        yRot = (const int)(100 * yRot) % 36000 * .01f;
+        xRot = normalizeAngle(yRot);
     }
-    if (event->keyboard.key_right.isPressed()) {
+    if (event->keyboard.key_down.isScrolled()) {
         yRot += angleStep;
-        yRot = (const int)(100 * yRot) % 36000 * .01f;
+        xRot = normalizeAngle(yRot);
     }
 
-    if (event->keyboard.key_w.isPressed() && !event->keyboard.key_s.isPressed()) {
+    if (event->mouse.scroll_up.isScrolled()) {
+        cameraDistanceScale--;
+        reloadCameraView();
+    }
+
+    if (event->mouse.scroll_down.isScrolled()) {
+        cameraDistanceScale++;
+        reloadCameraView();
+    }
+
+    if (event->keyboard.key_w.isScrolled() && !event->keyboard.key_s.isScrolled()) {
         combineRobot->move(moveStep * 2, 0);
     }
-    if (event->keyboard.key_s.isPressed() && !event->keyboard.key_w.isPressed()) {
+    if (event->keyboard.key_s.isScrolled() && !event->keyboard.key_w.isScrolled()) {
         combineRobot->move(-moveStep * 2, 0);
     }
-    if (event->keyboard.key_a.isPressed() && !event->keyboard.key_d.isPressed()) {
+    if (event->keyboard.key_a.isScrolled() && !event->keyboard.key_d.isScrolled()) {
         combineRobot->move(0, -moveStep);
     }
-    if (event->keyboard.key_d.isPressed() && !event->keyboard.key_a.isPressed()) {
+    if (event->keyboard.key_d.isScrolled() && !event->keyboard.key_a.isScrolled()) {
         combineRobot->move(0, moveStep);
     }
 
@@ -269,6 +313,5 @@ void updateView() {
 }
 
 void drawView() {
-    updateView();
 	combineRobot->draw();
 }

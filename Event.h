@@ -1,11 +1,15 @@
 #pragma once
+
 #include "KeyboardEvent.h"
+#include "MouseEvent.h"
 
 class Event
 {
 public:
-	KeyboardEvent keyboard;
 	Event();
 	~Event() = default;
+
+	KeyboardEvent keyboard;
+	MouseEvent mouse;
 };
 

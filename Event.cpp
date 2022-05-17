@@ -3,4 +3,5 @@
 Event::Event()
 {
 	keyboard = KeyboardEvent();
+	mouse = MouseEvent();
 }
