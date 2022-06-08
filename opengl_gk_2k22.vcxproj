@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -17,6 +17,46 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Base.cpp" />
+    <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\Blocks.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\CombineRobot.cpp" />
+    <ClCompile Include="src\Cuboid.cpp" />
+    <ClCompile Include="src\Cylinder.cpp" />
+    <ClCompile Include="src\Events.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\OBJModel.cpp" />
+    <ClCompile Include="src\Terrain.cpp" />
+    <ClCompile Include="src\Wheel.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Base.h" />
+    <ClInclude Include="src\App.h" />
+    <ClInclude Include="src\Blocks.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\CombineRobot.h" />
+    <ClInclude Include="src\Cuboid.h" />
+    <ClInclude Include="src\Cylinder.h" />
+    <ClInclude Include="src\DEFINES.h" />
+    <ClInclude Include="src\Events.h" />
+    <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\OBJInterpreter.h" />
+    <ClInclude Include="src\OBJModel.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\Terrain.h" />
+    <ClInclude Include="src\Wheel.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -72,38 +112,39 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)external\freeglut\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\freeglut\lib\$(Platform);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)libs\freeglut\include;$(SolutionDir)libs\glext\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)libs\freeglut\lib\$(Platform);$(SolutionDir)libs\glext\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)external\freeglut\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\freeglut\lib\$(Platform);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)libs\freeglut\include;$(SolutionDir)libs\glext\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)libs\freeglut\lib\$(Platform);$(SolutionDir)libs\glext\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)external\freeglut\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\freeglut\lib\$(Platform);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)libs\freeglut\include;$(SolutionDir)libs\glext\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)libs\freeglut\lib\$(Platform);$(SolutionDir)libs\glext\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)external\freeglut\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)external\freeglut\lib\$(Platform);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)libs\freeglut\include;$(SolutionDir)libs\glext\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)libs\freeglut\lib\$(Platform);$(SolutionDir)libs\glext\lib\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)external\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"</Command>
+      <Command>copy "$(SolutionDir)libs\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"
+copy "$(SolutionDir)libs\glext\bin\Win32\glext.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -112,34 +153,36 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)external\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"</Command>
+      <Command>copy "$(SolutionDir)libs\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"
+copy "$(SolutionDir)libs\glext\bin\Win32\glext.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)external\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"</Command>
+      <Command>copy "$(SolutionDir)libs\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"
+copy "$(SolutionDir)libs\glext\bin\Win32\glext.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,50 +191,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)external\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"</Command>
+      <Command>copy "$(SolutionDir)libs\freeglut\bin\$(Platform)\freeglut.dll" "$(OutDir)"
+copy "$(SolutionDir)libs\glext\bin\Win32\glext.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Blocks.h" />
-    <ClInclude Include="CombineRobot.h" />
-    <ClInclude Include="CONFIG.h" />
-    <ClInclude Include="Cuboid.h" />
-    <ClInclude Include="Cylinder.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="Key.h" />
-    <ClInclude Include="KeyboardEvent.h" />
-    <ClInclude Include="MouseEvent.h" />
-    <ClInclude Include="Wheel.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Blocks.cpp" />
-    <ClCompile Include="CombineRobot.cpp" />
-    <ClCompile Include="Cuboid.cpp" />
-    <ClCompile Include="Cylinder.cpp" />
-    <ClCompile Include="Event.cpp" />
-    <ClCompile Include="Gl_template.cpp" />
-    <ClCompile Include="Gl_template_old.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Key.cpp" />
-    <ClCompile Include="KeyboardEvent.cpp" />
-    <ClCompile Include="MouseEvent.cpp" />
-    <ClCompile Include="Wheel.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
