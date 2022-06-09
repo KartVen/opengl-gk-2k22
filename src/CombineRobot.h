@@ -2,14 +2,19 @@
 #include "Cylinder.h"
 #include <vector>
 #include "Wheel.h"
+#include "Events.h"
 
 #pragma once
 
 class CombineRobot {
 public:
-    Vec3 pos;
+    Vec3 absolutePos;
+    Vec3 relativePos;
+    Rotation rotate;
 private:
+    Events* events;
     Size size;
+
     Color basicColor;
     Color darkBasicColor;
     Color wheelColor;
@@ -27,12 +32,14 @@ private:
     std::vector<Wheel*> backWheelPart;
 
     int called = 0;
-
+    bool mode = 1;
     double scale;
 
 public:
     CombineRobot(double scale = 1, Vec3 pos = {0, 0, 0});
     ~CombineRobot();
+    void drive(double v);
+    void turnY(double v);
+    void update();
     void render();
-    void move(GLdouble x, GLdouble y);
 };

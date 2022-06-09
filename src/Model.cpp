@@ -16,7 +16,7 @@ void Model::load(std::string folderPath, std::string fileName)
 {
     FILE* file = fopen((folderPath + fileName).c_str(), "r");
     if (file == NULL) {
-        std::cout << "Model::File not open..\n";
+        std::cout << "Model::File not open.. ("<< folderPath + fileName <<")\n";
         return;
     }
     int currentMaterial = 0;
