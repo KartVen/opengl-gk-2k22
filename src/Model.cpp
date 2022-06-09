@@ -1,6 +1,6 @@
 #include "Model.h"
 #include <iostream>
-#include <iostream>
+#include "DEFINES.h"
 
 Model::Model() = default;
 
@@ -82,8 +82,10 @@ void Model::load(std::string folderPath, std::string fileName)
         }
     }
     fclose(file);
-    std::cout << "Model::loaded - " << folderPath + fileName << '\n';
-    std::cout << " - vs:" << vs.size() << " vts:" << vts.size() << " vns:" << vns.size() << " fs:" << fs.size() << '\n';
+    if (MODEL_DEBUG) {
+        std::cout << "Model::loaded - " << folderPath + fileName << '\n';
+        std::cout << " - vs:" << vs.size() << " vts:" << vts.size() << " vns:" << vns.size() << " fs:" << fs.size() << '\n';
+    }
 }
 
 void Model::loadMaterial(std::string folderPath, std::string fileName)
@@ -152,13 +154,25 @@ void Model::loadMaterial(std::string folderPath, std::string fileName)
         {
             char fileMapKdName[200] = "";
             int fOut = fscanf(file, "%s\n", &fileMapKdName);
-            materials.at(currentMaterial)->texture = this->loadTexture(folderPath, fileMapKdName);
+
+            unsigned int textureID = -1;
+            TexturesData* textures = TexturesData::getTexturesInfo();
+            if (textures->data.size() == 0)
+                textureID = this->loadTexture(folderPath, fileMapKdName);
+            else for (auto& texture : textures->data)
+                if (strcmp(texture.fileName.c_str(), fileMapKdName) == 0) textureID = texture.textureID;
+
+            if (textureID == -1) textureID = this->loadTexture(folderPath, fileMapKdName);
+
+            materials.at(currentMaterial)->texture = textureID;
         }
     }
     fclose(file);
     isMaterial = (materials.size() != 0) ? true : false;
-    std::cout << "Model::loaded - " << folderPath + fileName << '\n';
-    std::cout << " - materials:" << materials.size() << '\n';
+    if (MODEL_DEBUG) {
+        std::cout << "Model::loaded - " << folderPath + fileName << '\n';
+        std::cout << " - materials:" << materials.size() << '\n';
+    }
 }
 
 unsigned int Model::loadTexture(std::string folderPath, std::string fileName)
@@ -169,10 +183,9 @@ unsigned int Model::loadTexture(std::string folderPath, std::string fileName)
     unsigned int width, height;
     unsigned char* data; // RGB data
 
-    FILE* file = fopen((folderPath + fileName).c_str() , "rb");
+    FILE* file = fopen((folderPath + fileName).c_str(), "rb");
     if (!file) {
-        std::cout << folderPath + fileName << "could not be opened..\n";
-        getchar();
+        std::cout << fileName << " could not be opened..\n";
         return -1;
     }
 
@@ -227,7 +240,6 @@ unsigned int Model::loadTexture(std::string folderPath, std::string fileName)
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
@@ -240,10 +252,16 @@ unsigned int Model::loadTexture(std::string folderPath, std::string fileName)
 
     delete[] data;
 
-    std::cout << "Model:loaded - " << folderPath + fileName << '\n';
-    std::cout << " - textureID:" << textureID << '\n';
+    TexturesData* textures = TexturesData::getTexturesInfo();
+    textures->data.push_back({ textureID, fileName });
+
+    if (MODEL_DEBUG) {
+        std::cout << "Model:loaded - " << folderPath + fileName << '\n';
+        std::cout << " - textureID:" << textureID << '\n';
+    }
     return textureID;
 }
+
 void Model::render()
 {
     if (!isInit) return;

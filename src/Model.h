@@ -2,6 +2,7 @@
 
 #include "Base.h"
 #include <vector>
+#include "TexturesData.h"
 
 typedef struct Face
 {
