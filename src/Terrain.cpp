@@ -57,10 +57,7 @@ Terrain::~Terrain()
 	for (Model* fence4 : fences4) delete fence4;
 }
 
-void Terrain::update()
-{
-	
-}
+void Terrain::update(){}
 
 void Terrain::render()
 {

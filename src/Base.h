@@ -43,14 +43,6 @@ struct Triangle {
     GLdouble x3 = 0;
 };
 
-struct Face
-{
-    Triangle v;
-    Triangle vt;
-    Triangle vn;
-    friend std::ostream& operator<<(std::ostream& cout, const Face& obj);
-};
-
 struct Size {
     GLdouble x = 0, y = 0, z = 0;
     Size& operator*(double value);
