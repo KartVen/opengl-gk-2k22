@@ -1,7 +1,11 @@
 #include "CombineRobot.h"
 #include <iostream>
+#include "DEFINES.H"
 
 CombineRobot::CombineRobot(double scale, Vec3 pos) {
+	events = Events::getEvents();
+	this->absolutePos = this->relativePos = pos;
+	rotate = { 0,0,0 };
 	size = { 320,220,200 };
 	this->scale = scale;
 	basicColor.rgb(0,52,0);
@@ -44,6 +48,7 @@ CombineRobot::CombineRobot(double scale, Vec3 pos) {
 	Size2 frontWheelSize = { 28,25 };
 	Size2 backWheelSize = { 20,16 };
 
+	Vec3 size_2 = { size.x / 2, size.y / 2, size.z / 2 };
 	Vec3 headerLeftBottomPos = { 20,0,7 };
 	Vec3 headerLeftMiddlePos = { 33,0,25 };
 	Vec3 headerLeftTopPos = { 49,0,41 };
@@ -52,7 +57,7 @@ CombineRobot::CombineRobot(double scale, Vec3 pos) {
 	Vec3 headerRightMiddlePos = { 33,size.y - headerMiddleSize.y,25 };
 	Vec3 headerRightTopPos = { 49,size.y - headerTopSize.y,41 };
 	Vec3 headerRightFrontPos = { 0,size.y - headerMiddleSize.y,14 };
-	Vec3 headerBackPos = { headerLeftMiddlePos.x + headerMiddleSize.x - headerBackSize.x ,(size.y - headerBackSize.y) / 2,7 };
+	Vec3 headerBackPos = { headerLeftMiddlePos.x + headerMiddleSize.x - headerBackSize.x,(size.y - headerBackSize.y) / 2,7 };
 	Vec3 headerKnifesPos = { headerBackPos.x - headerKnifesSize.x,(size.y - headerKnifesSize.y) / 2,7 };
 	Vec3 headerBayonetsPos = { headerLeftMiddlePos.x + 2,(size.y - headerBayonetsSize.h) / 2,35 };
 	Vec3 headerHandlerPos = { headerBackPos.x,(size.y - headerHandlerSize.y) / 2,headerLeftMiddlePos.z + frontInterWheelSize.z/8};
@@ -135,20 +140,112 @@ CombineRobot::~CombineRobot() {
 	for (auto& frontWheelSingle : frontWheelPart) delete frontWheelSingle;
 	for (auto& backWheelSingle : backWheelPart) delete backWheelSingle;
 }
+
+void CombineRobot::drive(double v) {
+	relativePos.x -= v;
+	if (v < 0) mode = 0;
+	if (v > 0) mode = 1;
+}
+
+void CombineRobot::turnY(double v)
+{
+	rotate.y += v;
+}
+
+bool moveUp = 0, moveDown = 0;
+bool turnLeft = 0, turnRight = 0;
+
+void CombineRobot::update(){
+
+	switch (events->basicKey.key) {
+	case 'w':
+		if (events->basicKey.state == GLUT_UP) {
+			moveUp = 0;
+			std::cout << 'w\n';
+		}
+		else if (events->basicKey.state == GLUT_DOWN) {
+			moveUp = 1;
+			moveDown = 0;
+		}
+		break;
+	case 's':
+		if (events->basicKey.state == GLUT_UP) {
+			moveDown = 0;
+		}
+		else if (events->basicKey.state == GLUT_DOWN) {
+			moveDown = 1;
+			moveUp = 0;
+		}
+		break;
+	case 'a':
+		if (events->basicKey.state == GLUT_UP) {
+			turnLeft = 0;
+		}
+		else if (events->basicKey.state == GLUT_DOWN) {
+			turnLeft = 1;
+			turnRight = 0;
+		}
+		break;
+	case 'd':
+		if (events->basicKey.state == GLUT_UP) {
+			turnRight = 0;
+		}
+		else if (events->basicKey.state == GLUT_DOWN) {
+			turnRight = 1;
+			turnLeft = 0;
+		}
+		break;
+	}
+
+	if (moveUp && !moveDown) { drive(DRIVE_UNIT); }
+	if (moveDown && !moveUp) { drive(-DRIVE_UNIT); }
+	if (turnLeft && !turnRight) { turnY(-TURN_UNIT); }
+	if (turnRight && !turnLeft) { turnY(TURN_UNIT); }
+}
+
 void CombineRobot::render() {
 	glPushMatrix();
-	glRotatef(270,1.0f,0.0f,0.0f);
-	glTranslatef(-size.x / 2 * scale, -size.y / 2 * scale, 0 * scale);
+
+	glRotatef(270, 1, 0, 0);
+
+	glTranslatef(-size.x * scale / 2, -size.y * scale / 2, 0 * scale); // adaptation to the camera layout
+
+	glPushMatrix();
+
+	glRotatef(-rotate.y, 0, 0, 1);
+	glTranslatef(-relativePos.x, relativePos.y, relativePos.z);
+
 	glScalef(scale, scale, scale);
-	for (auto& headerSingle : headerPart) headerSingle -> render(pos);
-	for (auto& frontSingle : frontPart) frontSingle -> render(pos);
-	for (auto& middleSingle : middlePart) middleSingle -> render(pos);
-	for (auto& backSingle : backPart) backSingle -> render(pos);
-	for (auto& frontWheelSingle : frontWheelPart) frontWheelSingle -> render(pos);
-	for (auto& backWheelSingle : backWheelPart) backWheelSingle -> render(pos);
+
+	//// xAxis
+	//glBegin(GL_LINES);
+	//glColor3f(1.0f, 0.0f, 0.0f);
+	//glVertex3d(0, 0, 0);
+	//glVertex3d(5000, 0, 0);
+	//glEnd();
+
+	//// yAxis
+	//glBegin(GL_LINES);
+	//glColor3f(0.0f, 1.0f, 0.0f);
+	//glVertex3d(0, 0, 0);
+	//glVertex3d(0, 5000, 0);
+	//glEnd();
+
+	// zAxis
+	glBegin(GL_LINES);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3d(0, 0, 0);
+	glVertex3d(0, 0, 5000);
+	glEnd();
+
+	Vec3 shiftPos = { -size.x / 2, -size.y / 2 , 0 };
+	for (auto& headerSingle : headerPart) headerSingle->render(absolutePos + shiftPos);
+	for (auto& frontSingle : frontPart) frontSingle->render(absolutePos + shiftPos);
+	for (auto& middleSingle : middlePart) middleSingle->render(absolutePos + shiftPos);
+	for (auto& backSingle : backPart) backSingle->render(absolutePos + shiftPos);
+	for (auto& frontWheelSingle : frontWheelPart) frontWheelSingle->render(absolutePos + shiftPos);
+	for (auto& backWheelSingle : backWheelPart) backWheelSingle->render(absolutePos + shiftPos);
+
 	glPopMatrix();
-}
-void CombineRobot::move(GLdouble x, GLdouble y) {
-	pos.x -= x;
-	pos.y += y;
+	glPopMatrix();
 }

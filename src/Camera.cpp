@@ -94,15 +94,12 @@ void Camera::updateDir(int x, int y)
 	double alphaX = angle.x + deltaAngle.x;
 	double alphaY = angle.y + deltaAngle.y;
 
-	if (alphaY < -M_PI_2) alphaY = -M_PI_2;
-	if (alphaY < -M_PI_2) alphaY = -M_PI_2;
+	if (alphaY < CAM_Y_BORDER) alphaY = CAM_Y_BORDER;
+	if (alphaY > M_PI_2 - CAM_Y_BORDER) alphaY = M_PI_2 - CAM_Y_BORDER;
 
 	dir.x = cos(alphaY) * cos(alphaX) * fov;
 	dir.y = sin(alphaY) * fov;
 	dir.z = cos(alphaY) * sin(alphaX) * fov;
-
-	//if (pos.y + dir.y <= .5) dir.y = .5 - (pos.y + dir.y);
-	//if (pos.y + dir.y >= 9.5) dir.y = 9.5 - pos.y;
 }
 
 void Camera::renderLookAxe()

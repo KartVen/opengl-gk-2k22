@@ -29,6 +29,9 @@ void App::update()
 		break;
 	}
 
+	combineRobot->update();
+
+	//camera->pos = combineRobot->absolutePos;
 	camera->update();
 }
 

@@ -5,7 +5,7 @@ Terrain::Terrain()
 	events = Events::getEvents();
 	ground = new Model("assets/map1/", "map.obj", 1);
 
-	house = new Model("assets/house/", "domek.obj", 0.3, { 4,0,8 });
+	//house = new Model("assets/building1/", "building1.obj", 0.3, { 4,0,8 });
 
 	const char* tree1FolderPath = "assets/tree1/";
 	const char* tree1FileName = "tree1.obj";
@@ -71,7 +71,7 @@ void Terrain::render()
 	glEnd();
 	*/
 	ground->render();
-	house->render();
+	//house->render();
 	for (Model* tree : trees) tree->render();
 	for (Model* fence1 : fences1) fence1->render();
 	for (Model* fence2 : fences2) fence2->render();

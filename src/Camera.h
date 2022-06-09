@@ -14,8 +14,8 @@ public:
 	Vec3 dir;
 private:
 	Vec2 angle;
-	Vec2 deltaAngle;
 public:
+	Vec2 deltaAngle;
 	float deltaMove;
 private:
 	Vec2 origin;
