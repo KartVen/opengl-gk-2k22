@@ -97,12 +97,6 @@ std::ostream& operator<<(std::ostream& cout, const Vec2& obj)
 	return cout;
 }
 
-std::ostream& operator<<(std::ostream& cout, const Face& obj)
-{
-	cout << (int)obj.v.x1 << '/' << (int)obj.vt.x1 << '/' << (int)obj.vn.x1 << ' ' << (int)obj.v.x2 << '/' << (int)obj.vt.x2 << '/' << (int)obj.vn.x2 << ' ' << (int)obj.v.x3 << '/' << (int)obj.vt.x3 << '/' << (int)obj.vn.x3;
-	return cout;
-}
-
 Size& Size::operator*(double value) {
 	x *= value;
 	y *= value;
