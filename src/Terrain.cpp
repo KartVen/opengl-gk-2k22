@@ -3,15 +3,9 @@
 Terrain::Terrain()
 {
 	events = Events::getEvents();
-<<<<<<< HEAD
-	ground = new Model("assets/map1/","map.obj", 1);
-	
-	house = new Model("assets/house/","domek.obj", 0.3, {4,0,8});
-=======
 	ground = new Model("assets/map1/", "map.obj", 1);
-	
-	building1 = new Model("assets/building1/", "building1.obj", 0.3, {4,0,8});
->>>>>>> 8c59a882067c50cf597fe9cfa16a26d9b1af5d80
+
+	house = new Model("assets/house/", "domek.obj", 0.3, { 4,0,8 });
 
 	const char* tree1FolderPath = "assets/tree1/";
 	const char* tree1FileName = "tree1.obj";
@@ -23,18 +17,10 @@ Terrain::Terrain()
 	trees.push_back(new Model(tree2FolderPath, tree2FileName, tree2Scale, { 9.7,0,-9.7 }));
 	trees.push_back(new Model(tree2FolderPath, tree2FileName, tree2Scale, { -8.2,2.5,-8.2 }));
 
-<<<<<<< HEAD
 	const char* fence1FolderPath = "assets/fence1/";
 	const char* fence1FileName = "fence1.obj";
 	double fence1Scale = 0.3;
 	for (double i = 1; i > -5; i -= 0.9) {//i = 9.5; i > -10; i -= 0.9) {
-=======
-
-	const char* fence1FolderPath = "assets/fence1/";
-	const char* fence1FileName = "fence1.obj";
-	double fence1Scale = 0.3;
-	for (double i = 1; i > -5; i -= 0.9) {
->>>>>>> 8c59a882067c50cf597fe9cfa16a26d9b1af5d80
 		fences1.push_back(new Model(fence1FolderPath, fence1FileName, fence1Scale, { -9.5,0,i }));
 	}
 
@@ -63,7 +49,7 @@ Terrain::Terrain()
 Terrain::~Terrain()
 {
 	delete ground;
-	delete building1;
+	delete house;
 	for (Model* tree : trees) delete tree;
 	for (Model* fence1 : fences1) delete fence1;
 	for (Model* fence2 : fences2) delete fence2;
@@ -71,7 +57,7 @@ Terrain::~Terrain()
 	for (Model* fence4 : fences4) delete fence4;
 }
 
-void Terrain::update(){}
+void Terrain::update() {}
 
 void Terrain::render()
 {
@@ -85,7 +71,7 @@ void Terrain::render()
 	glEnd();
 	*/
 	ground->render();
-	//building1->render();
+	house->render();
 	for (Model* tree : trees) tree->render();
 	for (Model* fence1 : fences1) fence1->render();
 	for (Model* fence2 : fences2) fence2->render();

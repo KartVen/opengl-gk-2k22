@@ -9,7 +9,7 @@ class Terrain
 	Model* ground;
 	Vec3 basePos;
 	
-	Model* building1;
+	Model* house;
 	std::vector<Model*> trees;
 	std::vector<Model*> fences1;
 	std::vector<Model*> fences2;
