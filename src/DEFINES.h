@@ -8,12 +8,12 @@
 // Camera
 #define CAM_SENSIVITY_X .0025
 #define CAM_SENSIVITY_Y .0020
-#define CAM_FOV 18.
+#define CAM_FOV 10.
 #define CAM_Y_BORDER 0.05
 
 // Model
 #define MODEL_DEBUG 0
 
 // CombineRobot
-#define DRIVE_UNIT 5.
+#define DRIVE_UNIT -0.01
 #define TURN_UNIT 2.

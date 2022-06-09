@@ -48,6 +48,7 @@ CombineRobot::CombineRobot(double scale, Vec3 pos) {
 	Size2 frontWheelSize = { 28,25 };
 	Size2 backWheelSize = { 20,16 };
 
+	Vec3 size_2 = { size.x / 2, size.y / 2, size.z / 2 };
 	Vec3 headerLeftBottomPos = { 20,0,7 };
 	Vec3 headerLeftMiddlePos = { 33,0,25 };
 	Vec3 headerLeftTopPos = { 49,0,41 };
@@ -56,7 +57,7 @@ CombineRobot::CombineRobot(double scale, Vec3 pos) {
 	Vec3 headerRightMiddlePos = { 33,size.y - headerMiddleSize.y,25 };
 	Vec3 headerRightTopPos = { 49,size.y - headerTopSize.y,41 };
 	Vec3 headerRightFrontPos = { 0,size.y - headerMiddleSize.y,14 };
-	Vec3 headerBackPos = { headerLeftMiddlePos.x + headerMiddleSize.x - headerBackSize.x ,(size.y - headerBackSize.y) / 2,7 };
+	Vec3 headerBackPos = { headerLeftMiddlePos.x + headerMiddleSize.x - headerBackSize.x,(size.y - headerBackSize.y) / 2,7 };
 	Vec3 headerKnifesPos = { headerBackPos.x - headerKnifesSize.x,(size.y - headerKnifesSize.y) / 2,7 };
 	Vec3 headerBayonetsPos = { headerLeftMiddlePos.x + 2,(size.y - headerBayonetsSize.h) / 2,35 };
 	Vec3 headerHandlerPos = { headerBackPos.x,(size.y - headerHandlerSize.y) / 2,headerLeftMiddlePos.z + frontInterWheelSize.z/8};
@@ -205,27 +206,46 @@ void CombineRobot::update(){
 void CombineRobot::render() {
 	glPushMatrix();
 
-	//glRotatef(270, 1, 0, 0);
-	//if(mode && relativePos.x > 0 || !mode && relativePos.x > 0) glRotatef(-rotate.y, 0, 0, 1);
-	//else if (mode && relativePos.x < 0 || !mode && relativePos.x < 0) glRotatef(rotate.y, 0, 0, 1);
+	glRotatef(270, 1, 0, 0);
 
-	//glTranslatef(-size.x * scale / 2, -size.y * scale / 2, 0 * scale); // adaptation to the camera layout
-	//glTranslatef(-relativePos.x, relativePos.y, relativePos.z);
+	glTranslatef(-size.x * scale / 2, -size.y * scale / 2, 0 * scale); // adaptation to the camera layout
+
+	glPushMatrix();
+
+	glRotatef(-rotate.y, 0, 0, 1);
+	glTranslatef(-relativePos.x, relativePos.y, relativePos.z);
 
 	glScalef(scale, scale, scale);
 
+	//// xAxis
+	//glBegin(GL_LINES);
+	//glColor3f(1.0f, 0.0f, 0.0f);
+	//glVertex3d(0, 0, 0);
+	//glVertex3d(5000, 0, 0);
+	//glEnd();
+
+	//// yAxis
+	//glBegin(GL_LINES);
+	//glColor3f(0.0f, 1.0f, 0.0f);
+	//glVertex3d(0, 0, 0);
+	//glVertex3d(0, 5000, 0);
+	//glEnd();
+
+	// zAxis
 	glBegin(GL_LINES);
 	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3d(0, 0, 0);
-	glVertex3d(0, 0, 500);
+	glVertex3d(0, 0, 5000);
 	glEnd();
 
-	for (auto& headerSingle : headerPart) headerSingle->render(absolutePos);
-	for (auto& frontSingle : frontPart) frontSingle->render(absolutePos);
-	for (auto& middleSingle : middlePart) middleSingle->render(absolutePos);
-	for (auto& backSingle : backPart) backSingle->render(absolutePos);
-	for (auto& frontWheelSingle : frontWheelPart) frontWheelSingle->render(absolutePos);
-	for (auto& backWheelSingle : backWheelPart) backWheelSingle->render(absolutePos);
+	Vec3 shiftPos = { -size.x / 2, -size.y / 2 , 0 };
+	for (auto& headerSingle : headerPart) headerSingle->render(absolutePos + shiftPos);
+	for (auto& frontSingle : frontPart) frontSingle->render(absolutePos + shiftPos);
+	for (auto& middleSingle : middlePart) middleSingle->render(absolutePos + shiftPos);
+	for (auto& backSingle : backPart) backSingle->render(absolutePos + shiftPos);
+	for (auto& frontWheelSingle : frontWheelPart) frontWheelSingle->render(absolutePos + shiftPos);
+	for (auto& backWheelSingle : backWheelPart) backWheelSingle->render(absolutePos + shiftPos);
 
+	glPopMatrix();
 	glPopMatrix();
 }
