@@ -73,10 +73,15 @@ void Model::render()
         vertex3 = vertex3 + pos;
 
         glBegin(GL_TRIANGLES);
-        glColor3f(0.4f, 0.4f, 0.4f);
+        if(isColor) glColor3f(color.r, color.g, color.b);
         glVertex3f(vertex1.x, vertex1.y, vertex1.z);
         glVertex3f(vertex2.x, vertex2.y, vertex2.z);
         glVertex3f(vertex3.x, vertex3.y, vertex3.z);
         glEnd();
     }
+}
+
+void Model::forceColor(bool isColor)
+{
+    this->isColor = isColor;
 }

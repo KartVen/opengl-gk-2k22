@@ -51,14 +51,6 @@ struct Face
     friend std::ostream& operator<<(std::ostream& cout, const Face& obj);
 };
 
-struct ObjectStruct
-{
-    std::vector <Vec3> vertexPoss;
-    std::vector <Vec2> vertexTexs;
-    std::vector <Vec3> vertexNormals;
-    std::vector <Face> faces;
-};
-
 struct Size {
     GLdouble x = 0, y = 0, z = 0;
     Size& operator*(double value);

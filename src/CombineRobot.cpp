@@ -1,10 +1,9 @@
 #include "CombineRobot.h"
 #include <iostream>
 
-CombineRobot::CombineRobot(GLfloat x, GLfloat y, GLfloat z) {
-	pos = { x,y,z };
+CombineRobot::CombineRobot(double scale, Vec3 pos) {
 	size = { 320,220,200 };
-
+	this->scale = scale;
 	basicColor.rgb(0,52,0);
 	darkBasicColor.rgb(0,26,0);
 	wheelColor.rgb(26);
@@ -138,7 +137,6 @@ CombineRobot::~CombineRobot() {
 }
 void CombineRobot::render() {
 	glPushMatrix();
-	double scale = 0.01;
 	glRotatef(270,1.0f,0.0f,0.0f);
 	glTranslatef(-size.x / 2 * scale, -size.y / 2 * scale, 0 * scale);
 	glScalef(scale, scale, scale);

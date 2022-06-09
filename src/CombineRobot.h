@@ -28,8 +28,10 @@ private:
 
     int called = 0;
 
+    double scale;
+
 public:
-    CombineRobot(GLfloat x = 0, GLfloat y = 0, GLfloat z = 0);
+    CombineRobot(double scale = 1, Vec3 pos = {0, 0, 0});
     ~CombineRobot();
     void render();
     void move(GLdouble x, GLdouble y);

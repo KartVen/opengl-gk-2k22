@@ -10,7 +10,7 @@ App::App()
 	camera->setSensivity(CAM_SENSIVITY_X, CAM_SENSIVITY_Y);
 
 	terrain = new Terrain();
-	combineRobot = new CombineRobot();
+	combineRobot = new CombineRobot(0.005);
 }
 
 App::~App()
