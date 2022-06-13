@@ -2,7 +2,7 @@
 
 #include "Base.h"
 #include <vector>
-#include "TexturesData.h"
+#include "Textures.h"
 
 typedef struct Face
 {
@@ -58,7 +58,7 @@ private:
 	std::vector <unsigned int> lists;
 	std::vector <Material*> materials;
 	bool isMaterial = true;
-	bool isNormal = true; // when model  haven't got normals
+	bool isNormal = true; // when model haven't got normals
 	bool isTexture = true;
 public:
 	double scale = 1.;

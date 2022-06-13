@@ -1,12 +1,12 @@
 #include "App.h"
 #include <iostream>
-#include "TexturesData.h"
+#include "Textures.h"
 
 App::App()
 {
 	events = Events::getEvents();
-	TexturesData::init();
-	
+	Textures::initTextures();
+
 	camera = new Camera();
 	camera->setFOV(CAM_FOV);
 	camera->setSensivity(CAM_SENSIVITY_X, CAM_SENSIVITY_Y);
@@ -18,7 +18,7 @@ App::App()
 App::~App()
 {
 	delete camera;
-	TexturesData::destroy();
+	Textures::destroyTextures();
 }
 
 void App::update()

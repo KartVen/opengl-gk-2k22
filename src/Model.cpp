@@ -156,7 +156,7 @@ void Model::loadMaterial(std::string folderPath, std::string fileName)
             int fOut = fscanf(file, "%s\n", &fileMapKdName);
 
             unsigned int textureID = -1;
-            TexturesData* textures = TexturesData::getTexturesInfo();
+            Textures* textures = Textures::getTextures();
             if (textures->data.size() == 0)
                 textureID = this->loadTexture(folderPath, fileMapKdName);
             else for (auto& texture : textures->data)
@@ -252,7 +252,7 @@ unsigned int Model::loadTexture(std::string folderPath, std::string fileName)
 
     delete[] data;
 
-    TexturesData* textures = TexturesData::getTexturesInfo();
+    Textures* textures = Textures::getTextures();
     textures->data.push_back({ textureID, fileName });
 
     if (MODEL_DEBUG) {
