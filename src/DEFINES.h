@@ -8,7 +8,8 @@
 // Camera
 #define CAM_SENSIVITY_X .0025
 #define CAM_SENSIVITY_Y .0020
-#define CAM_FOV 10.
+#define CAM_FOV 40.
+#define CAM_Y_LOCK 0
 #define CAM_Y_BORDER 0.05
 
 // Model

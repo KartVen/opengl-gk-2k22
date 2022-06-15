@@ -20,8 +20,8 @@ public:
 	Key specialKey;
 	Key mouseKey;
 	MousePos mousePos;
-	const short int down = 0;
-	const short int up = 1;
+	const short int keyDown = 0;
+	const short int keyUp = 1;
 private:
 	Events();
 	~Events() = default;

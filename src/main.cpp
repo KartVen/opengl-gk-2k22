@@ -98,25 +98,25 @@ void coordinateAxis(bool x, bool y, bool z) {
 	if (x) {
 		// xAxis
 		glBegin(GL_LINES);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3d(0, 0, 0);
-		glVertex3d(5000, 0, 0);
+			glColor3f(1.0f, 0.0f, 0.0f);
+			glVertex3d(0, 0, 0);
+			glVertex3d(5000, 0, 0);
 		glEnd();
 	}
 	if (y) {
 		// yAxis
 		glBegin(GL_LINES);
-		glColor3f(0.0f, 1.0f, 0.0f);
-		glVertex3d(0, 0, 0);
-		glVertex3d(0, 5000, 0);
+			glColor3f(0.0f, 1.0f, 0.0f);
+			glVertex3d(0, 0, 0);
+			glVertex3d(0, 5000, 0);
 		glEnd();
 	}
 	if (z) {
 		// zAxis
 		glBegin(GL_LINES);
-		glColor3f(0.0f, 0.0f, 1.0f);
-		glVertex3d(0, 0, 0);
-		glVertex3d(0, 0, 5000);
+			glColor3f(0.0f, 0.0f, 1.0f);
+			glVertex3d(0, 0, 0);
+			glVertex3d(0, 0, 5000);
 		glEnd();
 	}
 }
@@ -156,17 +156,7 @@ void renderDisplay(void) {
 	// Reset transformations
 	glLoadIdentity();
 
-	gluLookAt(
-		app->camera->pos.x + app->camera->dir.x,
-		app->camera->pos.y + app->camera->dir.y,
-		app->camera->pos.z + app->camera->dir.z,
-		app->camera->pos.x,
-		app->camera->pos.y,
-		app->camera->pos.z,
-		0.0f,
-		1.0f,
-		0.0f
-	);
+	app->camera->renderLookAt();
 
 	coordinateAxis(1, 1, 1);
 

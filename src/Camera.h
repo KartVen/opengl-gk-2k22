@@ -7,6 +7,8 @@
 
 class Camera
 {
+private:
+	static Camera* selfInstance;
 public:
 	// camera - Vec3
 	Vec3 pos;
@@ -17,6 +19,8 @@ private:
 public:
 	Vec2 deltaAngle;
 	float deltaMove;
+	double yBorder;
+	bool yLock;
 private:
 	Vec2 origin;
 	Vec2 sensivity;
@@ -25,13 +29,18 @@ public:
 	bool cameraMoving;
 private:
 	Events* events;
-public:
 	Camera();
 	~Camera();
+public:
+	static Camera* getCamera();
+	static void destroyCamera();
 	void update();
 	void setFOV(int fov);
 	void setSensivity(double senvX, double senvY);
+	void setYBorder(double yBorder);
+	void setYLock(bool lock = true);
 	void updateDir(int x, int y);
-	void renderLookAxe();
+	void renderLookAxe(bool x, bool y, bool z);
+	void renderLookAt();
 };
 

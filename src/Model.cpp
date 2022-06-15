@@ -7,6 +7,8 @@ Model::Model() = default;
 Model::Model(std::string folderPath, std::string fileName, double scale, Vec3 pos)
 {
     this->pos = pos;
+    this->modelAxePos = 0;
+    this->renderAxeSet = 0;
     this->scale = scale;
     this->load(folderPath, fileName);
     this->isInit = true;
@@ -28,7 +30,7 @@ void Model::load(std::string folderPath, std::string fileName)
         if (res == EOF) break;
         if (strcmp(lineHeader, "mtllib") == 0) {
             char fileMaterialName[200] = "";
-            int fOut = fscanf(file, "%s\n", fileMaterialName);
+            int fOut = fscanf(file, " %[^\n]", fileMaterialName);
             this->loadMaterial(folderPath, fileMaterialName);
             int bp = 0;
         }
@@ -153,7 +155,7 @@ void Model::loadMaterial(std::string folderPath, std::string fileName)
         else if (strcmp(lineHeader, "map_Kd") == 0)
         {
             char fileMapKdName[200] = "";
-            int fOut = fscanf(file, "%s\n", &fileMapKdName);
+            int fOut = fscanf(file, " %[^\n]", &fileMapKdName);
 
             unsigned int textureID = -1;
             Textures* textures = Textures::getTextures();
@@ -265,14 +267,20 @@ unsigned int Model::loadTexture(std::string folderPath, std::string fileName)
 void Model::render()
 {
     if (!isInit) return;
+    glPushMatrix();
+    glTranslated(pos.x * scale, pos.y * scale, pos.z * scale);
+    renderAxe();
+    glPushMatrix();
+    glTranslated(modelAxePos.x * scale, modelAxePos.y * scale, modelAxePos.z * scale);
+
     for (const Face& face : fs) {
 
         Vec3 vertex1 = vs.at(face.v.x1 - 1) * scale;
         Vec3 vertex2 = vs.at(face.v.x2 - 1) * scale;
         Vec3 vertex3 = vs.at(face.v.x3 - 1) * scale;
-        vertex1 = vertex1 + pos;
-        vertex2 = vertex2 + pos;
-        vertex3 = vertex3 + pos;
+        //vertex1 = vertex1 + pos;
+        //vertex2 = vertex2 + pos;
+        //vertex3 = vertex3 + pos;
 
         Vec2 vertexT1 = vts.at(face.vt.x1 - 1);
         Vec2 vertexT2 = vts.at(face.vt.x2 - 1);
@@ -281,12 +289,47 @@ void Model::render()
         glBindTexture(GL_TEXTURE_2D, materials.at(face.material)->texture);
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_TRIANGLES);
-        
+
         glTexCoord2d(vertexT1.x, vertexT1.y); glVertex3f(vertex1.x, vertex1.y, vertex1.z);
         glTexCoord2d(vertexT2.x, vertexT1.y); glVertex3f(vertex2.x, vertex2.y, vertex2.z);
         glTexCoord2d(vertexT3.x, vertexT1.y); glVertex3f(vertex3.x, vertex3.y, vertex3.z);
-        
+
         glEnd();
         glDisable(GL_TEXTURE_2D);
+
+    }
+
+    glPopMatrix();
+    glPopMatrix();
+}
+
+void Model::renderAxe(bool x, bool y, bool z) {
+    this->renderAxeSet = { (double)x,(double)y,(double)z };
+}
+
+void Model::renderAxe() {
+    if (renderAxeSet.x) {
+        // xAxis
+        glBegin(GL_LINES);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3d(0, 0, 0);
+        glVertex3d(5000, 0, 0);
+        glEnd();
+    }
+    if (renderAxeSet.y) {
+        // yAxis
+        glBegin(GL_LINES);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex3d(0, 0, 0);
+        glVertex3d(0, 5000, 0);
+        glEnd();
+    }
+    if (renderAxeSet.z) {
+        // zAxis
+        glBegin(GL_LINES);
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex3d(0, 0, 0);
+        glVertex3d(0, 0, 5000);
+        glEnd();
     }
 }

@@ -8,6 +8,7 @@ struct Vec3 {
     GLdouble y = 0;
     GLdouble z = 0;
     Vec3& operator+(const Vec3& value);
+    Vec3& operator-(const Vec3& value);
     Vec3& operator*(double value);
     Vec3& operator*=(double value);
     Vec3& operator+=(const Vec3& value);
@@ -19,6 +20,7 @@ struct Vec2 {
 	GLdouble x = 0;
 	GLdouble y = 0;
     Vec2& operator+(const Vec2& value);
+    Vec2& operator-(const Vec2& value);
     Vec2& operator*(double value);
     Vec2& operator*=(double value);
     Vec2& operator+=(const Vec2& value);
