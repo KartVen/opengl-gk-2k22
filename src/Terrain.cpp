@@ -3,46 +3,52 @@
 Terrain::Terrain()
 {
 	events = Events::getEvents();
-	ground = new Model("assets/map1/", "map.obj", 1);
+	double groundScale = 3.5;
+	ground = new Model("assets/map1/", "map.obj", groundScale);
 
-	house = new Model("assets/building4/", "building1.obj", 0.3, { 4,0,8 });
+	double buildingScale = 1.25;
+	house = new Model("assets/building4/", "building1.obj", buildingScale, {
+		4 * groundScale / buildingScale,
+		0 * groundScale / buildingScale,
+		8 * groundScale / buildingScale
+	});
 
 	const char* tree1FolderPath = "assets/tree1-red/";
 	const char* tree1FileName = "tree1.obj";
-	double tree1Scale = 0.3;
+	double tree1Scale = 1;
 	const char* tree2FolderPath = "assets/tree2-red/";
 	const char* tree2FileName = "tree2.obj";
-	double tree2Scale = 0.3;
-	trees.push_back(new Model(tree1FolderPath, tree1FileName, tree1Scale, { 9.7,0,9.7 }));
-	trees.push_back(new Model(tree2FolderPath, tree2FileName, tree2Scale, { 9.7,0,-9.7 }));
-	trees.push_back(new Model(tree2FolderPath, tree2FileName, tree2Scale, { -8.2,2.5,-8.2 }));
+	double tree2Scale = 1;
+	trees.push_back(new Model(tree1FolderPath, tree1FileName, tree1Scale, { 9.7 * groundScale,0 * groundScale,9.7 * groundScale }));
+	trees.push_back(new Model(tree2FolderPath, tree2FileName, tree2Scale, { 9.7 * groundScale,0 * groundScale,-9.7 * groundScale }));
+	trees.push_back(new Model(tree2FolderPath, tree2FileName, tree2Scale, { -8.2 * groundScale,2.5 * groundScale,-8.2 * groundScale }));
 
 	const char* fence1FolderPath = "assets/fence1-red/";
 	const char* fence1FileName = "fence1.obj";
-	double fence1Scale = 0.3;
+	double fence1Scale = 1;
 	for (double i = 1; i > -5; i -= 0.9) {//i = 9.5; i > -10; i -= 0.9) {
-		fences1.push_back(new Model(fence1FolderPath, fence1FileName, fence1Scale, { -9.5,0,i }));
+		fences1.push_back(new Model(fence1FolderPath, fence1FileName, fence1Scale, { -9.5 * groundScale,0 * groundScale,i * groundScale }));
 	}
 
 	const char* fence2FolderPath = "assets/fence1-red/";
 	const char* fence2FileName = "fence1.obj";
-	double fence2Scale = 0.3;
+	double fence2Scale = 1;
 	for (double i = 9; i > -9.5; i -= 0.9) {
-		fences2.push_back(new Model(fence2FolderPath, fence2FileName, fence2Scale, { 9.5,0,i }));
+		fences2.push_back(new Model(fence2FolderPath, fence2FileName, fence2Scale, { 9.5 * groundScale,0 * groundScale,i * groundScale }));
 	}
 
 	const char* fence3FolderPath = "assets/fence2-red/";
 	const char* fence3FileName = "fence2.obj";
-	double fence3Scale = 0.3;
+	double fence3Scale = 1;
 	for (double i = 9.05; i > -5; i -= 0.9) {
-		fences3.push_back(new Model(fence3FolderPath, fence3FileName, fence3Scale, { i,0,-9.45 }));
+		fences3.push_back(new Model(fence3FolderPath, fence3FileName, fence3Scale, { i * groundScale,0 * groundScale,-9.45 * groundScale }));
 	}
 
 	const char* fence4FolderPath = "assets/fence2-red/";
 	const char* fence4FileName = "fence2.obj";
-	double fence4Scale = 0.3;
+	double fence4Scale = 1;
 	for (double i = 9.05; i > -1; i -= 0.9) {
-		fences4.push_back(new Model(fence4FolderPath, fence4FileName, fence4Scale, { i,0,9.45 }));
+		fences4.push_back(new Model(fence4FolderPath, fence4FileName, fence4Scale, { i * groundScale,0 * groundScale,9.45 * groundScale }));
 	}
 }
 
@@ -61,15 +67,6 @@ void Terrain::update() {}
 
 void Terrain::render()
 {
-	/*
-	glColor3f(0.4f, 0.4f, 0.4f);
-	glBegin(GL_QUADS);
-	glVertex3f(-100.0f, 0.0f, -100.0f);
-	glVertex3f(-100.0f, 0.0f, 100.0f);
-	glVertex3f(100.0f, 0.0f, 100.0f);
-	glVertex3f(100.0f, 0.0f, -100.0f);
-	glEnd();
-	*/
 	ground->render();
 	house->render();
 	for (Model* tree : trees) tree->render();

@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include <iostream>
 
+Camera* Camera::selfInstance = nullptr;
+
 Camera::Camera()
 {
 	fov = 5.;
@@ -9,6 +11,8 @@ Camera::Camera()
 	pos = { .0,.0,.0 };
 	sensivity = { .05,.03 };
 	origin = 0;
+	yBorder = 0;
+	yLock = false;
 	
 	cameraMoving = false;
 	updateDir(0,0);
@@ -16,6 +20,18 @@ Camera::Camera()
 }
 
 Camera::~Camera() = default;
+
+Camera* Camera::getCamera()
+{
+	if (selfInstance == nullptr) selfInstance = new Camera();
+	return selfInstance;
+}
+
+void Camera::destroyCamera()
+{
+	delete selfInstance;
+	selfInstance = nullptr;
+}
 
 void Camera::update()
 {
@@ -85,6 +101,16 @@ void Camera::setSensivity(double senvX, double senvY)
 	updateDir(0, 0);
 }
 
+void Camera::setYBorder(double yBorder)
+{
+	this->yBorder = yBorder;
+}
+
+void Camera::setYLock(bool lock)
+{
+	yLock = lock;
+}
+
 void Camera::updateDir(int x, int y)
 {
 	// update camera's direction
@@ -94,19 +120,56 @@ void Camera::updateDir(int x, int y)
 	double alphaX = angle.x + deltaAngle.x;
 	double alphaY = angle.y + deltaAngle.y;
 
-	if (alphaY < CAM_Y_BORDER) alphaY = CAM_Y_BORDER;
-	if (alphaY > M_PI_2 - CAM_Y_BORDER) alphaY = M_PI_2 - CAM_Y_BORDER;
+	if (yLock) {
+		if (alphaY < yBorder) alphaY = yBorder;
+		const double Y_MAX_BORDER = M_PI_2 - 0.25;
+		if (alphaY > Y_MAX_BORDER) alphaY = Y_MAX_BORDER;
+	}
 
 	dir.x = cos(alphaY) * cos(alphaX) * fov;
 	dir.y = sin(alphaY) * fov;
 	dir.z = cos(alphaY) * sin(alphaX) * fov;
 }
 
-void Camera::renderLookAxe()
+void Camera::renderLookAxe(bool x, bool y, bool z)
 {
-	glBegin(GL_LINES);
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3d(pos.x, pos.y, pos.z);
-	glVertex3d(pos.x, pos.y + 500, pos.z);
-	glEnd();
+	if (x) {
+		// xAxis
+		glBegin(GL_LINES);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3d(0, 0, 0);
+		glVertex3d(100, 0, 0);
+		glEnd();
+	}
+	if (y) {
+		// yAxis
+		glBegin(GL_LINES);
+		glColor3f(0.0f, 1.0f, 0.0f);
+		glVertex3d(0, 0, 0);
+		glVertex3d(0, 100, 0);
+		glEnd();
+	}
+	if (z) {
+		// zAxis
+		glBegin(GL_LINES);
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3d(0, 0, 0);
+		glVertex3d(0, 0, 100);
+		glEnd();
+	}
+}
+
+void Camera::renderLookAt()
+{
+	gluLookAt(
+		pos.x + dir.x,
+		pos.y + dir.y,
+		pos.z + dir.z,
+		pos.x,
+		pos.y,
+		pos.z,
+		0.0f,
+		1.0f,
+		0.0f
+	);
 }

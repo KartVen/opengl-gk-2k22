@@ -9,6 +9,16 @@ Vec3& Vec3::operator+(const Vec3& value) {
 	return newVec;
 }
 
+Vec3& Vec3::operator-(const Vec3& value)
+{
+	Vec3 newVec = {
+		this->x - value.x,
+		this->y - value.y,
+		this->z - value.z
+	};
+	return newVec;
+}
+
 Vec3& Vec3::operator*(double value) {
 	Vec3 newVec = {
 		this->x * value,
@@ -40,6 +50,15 @@ Vec2& Vec2::operator+(const Vec2& value)
 	Vec2 newVec = {
 		   this->x * value.x,
 		   this->y * value.y
+	};
+	return newVec;
+}
+
+Vec2& Vec2::operator-(const Vec2& value)
+{
+	Vec2 newVec = {
+		this->x - value.x,
+		this->y - value.y,
 	};
 	return newVec;
 }

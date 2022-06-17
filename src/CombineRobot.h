@@ -1,45 +1,41 @@
 #include "Cuboid.h"
 #include "Cylinder.h"
 #include <vector>
-#include "Wheel.h"
 #include "Events.h"
+#include "Model.h"
+#include "Wheel2.h"
+#include "Camera.h"
 
 #pragma once
 
 class CombineRobot {
-public:
-    Vec3 absolutePos;
-    Vec3 relativePos;
-    Rotation rotate;
 private:
     Events* events;
-    Size size;
-
-    Color basicColor;
-    Color darkBasicColor;
-    Color wheelColor;
-    Color headerFrontColor;
-    Color bayonetsColor;
-    Color cabineColor;
-    Color roofColor;
-    Color glassColor;
-    
-    std::vector<Blocks*> headerPart;
-    std::vector<Cuboid*> frontPart;
-    std::vector<Cuboid*> middlePart;
-    std::vector<Cuboid*> backPart;
-    std::vector<Wheel*> frontWheelPart;
-    std::vector<Wheel*> backWheelPart;
-
+private:
+    Model* self;
+    Wheel2* leftFrontWheel;
+    Wheel2* rightFrontWheel;
+    Wheel2* leftBackWheel;
+    Wheel2* rightBackWheel;
+public:
+    double wheelAngle;
+public:
+    Vec3 pos;
+    Vec3 posBB; // posBackBuffer;
+    Rotation rotate;
+    Vec3 size;
+    Vec3 facing;
+    double speed;
+private:
     int called = 0;
     bool mode = 1;
-    double scale;
-
 public:
     CombineRobot(double scale = 1, Vec3 pos = {0, 0, 0});
     ~CombineRobot();
-    void drive(double v);
-    void turnY(double v);
     void update();
     void render();
+private:
+    void drive(double v);
+    void turn(double v);
+    void updatePhysics();
 };

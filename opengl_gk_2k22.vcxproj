@@ -19,8 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Base.cpp" />
     <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\Base.cpp" />
     <ClCompile Include="src\Blocks.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\CombineRobot.cpp" />
@@ -30,12 +30,13 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Model.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
-    <ClCompile Include="src\Wheel.cpp" />
     <ClCompile Include="src\Textures.cpp" />
+    <ClCompile Include="src\Wheel.cpp" />
+    <ClCompile Include="src\Wheel2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Base.h" />
     <ClInclude Include="src\App.h" />
+    <ClInclude Include="src\Base.h" />
     <ClInclude Include="src\Blocks.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\CombineRobot.h" />
@@ -45,8 +46,9 @@
     <ClInclude Include="src\Events.h" />
     <ClInclude Include="src\Model.h" />
     <ClInclude Include="src\Terrain.h" />
-    <ClInclude Include="src\Wheel.h" />
     <ClInclude Include="src\Textures.h" />
+    <ClInclude Include="src\Wheel.h" />
+    <ClInclude Include="src\Wheel2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

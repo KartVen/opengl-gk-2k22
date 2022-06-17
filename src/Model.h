@@ -49,7 +49,11 @@ class Model
 {
 private:
 	bool isInit = false;
+public:
 	Vec3 pos;
+	Vec3 modelAxePos;
+private:
+	Vec3 renderAxeSet;
 	std::vector <Vec3> vs;
 	std::vector <Vec2> vts;
 	std::vector <Vec3> vns;
@@ -65,10 +69,12 @@ public:
 	Color color;
 public:
 	Model();
-	Model(std::string folderPath, std::string fileName, double scale, Vec3 pos = { 0.,0.,0. });
+	Model(std::string folderPath, std::string fileName, double scale = 1, Vec3 pos = { 0.,0.,0. });
     void load(std::string folderPath, std::string fileName);
 	void render();
+	void renderAxe(bool x, bool y, bool z);
 private:
 	void loadMaterial(std::string folderPath, std::string fileName);
 	unsigned int loadTexture(std::string folderPath, std::string fileName);
+	void renderAxe();
 };
