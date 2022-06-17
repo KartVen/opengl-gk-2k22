@@ -27,4 +27,7 @@ void Events::reset()
 	basicKey.state = -1;
 	specialKey.state = -1;
 	mouseKey.state = -1;
+	basicKey.key = -1;
+	specialKey.key = -1;
+	mouseKey.key = -1;
 }

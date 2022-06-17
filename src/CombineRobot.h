@@ -3,6 +3,8 @@
 #include <vector>
 #include "Events.h"
 #include "Model.h"
+#include "Wheel2.h"
+#include "Camera.h"
 
 #pragma once
 
@@ -11,11 +13,19 @@ private:
     Events* events;
 private:
     Model* self;
+    Wheel2* leftFrontWheel;
+    Wheel2* rightFrontWheel;
+    Wheel2* leftBackWheel;
+    Wheel2* rightBackWheel;
+public:
+    double wheelAngle;
 public:
     Vec3 pos;
     Vec3 posBB; // posBackBuffer;
     Rotation rotate;
     Vec3 size;
+    Vec3 facing;
+    double speed;
 private:
     int called = 0;
     bool mode = 1;
@@ -27,4 +37,5 @@ public:
 private:
     void drive(double v);
     void turn(double v);
+    void updatePhysics();
 };

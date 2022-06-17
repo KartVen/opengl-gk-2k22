@@ -158,11 +158,11 @@ void renderDisplay(void) {
 
 	app->camera->renderLookAt();
 
-	coordinateAxis(1, 1, 1);
+	//coordinateAxis(1, 1, 1);
 
-	glPushMatrix();
+	//glPushMatrix();
 	app->render();
-	glPopMatrix();
+	//glPopMatrix();
 
 	glutSwapBuffers();
 }

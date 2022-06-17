@@ -14,7 +14,7 @@ App::App()
 	camera->setYBorder(CAM_Y_BORDER);
 
 	terrain = new Terrain();
-	combineRobot = new CombineRobot(1, {0,1,0});
+	combineRobot = new CombineRobot(.65, {0,0,0});
 }
 
 App::~App()

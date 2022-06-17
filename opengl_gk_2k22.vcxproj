@@ -32,6 +32,7 @@
     <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\Textures.cpp" />
     <ClCompile Include="src\Wheel.cpp" />
+    <ClCompile Include="src\Wheel2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\App.h" />
@@ -47,6 +48,7 @@
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Wheel.h" />
+    <ClInclude Include="src\Wheel2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

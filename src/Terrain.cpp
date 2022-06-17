@@ -6,7 +6,12 @@ Terrain::Terrain()
 	double groundScale = 3.5;
 	ground = new Model("assets/map1/", "map.obj", groundScale);
 
-	house = new Model("assets/building4/", "building1.obj", 1, { 4 * groundScale,0 * groundScale,8 * groundScale });
+	double buildingScale = 1.25;
+	house = new Model("assets/building4/", "building1.obj", buildingScale, {
+		4 * groundScale / buildingScale,
+		0 * groundScale / buildingScale,
+		8 * groundScale / buildingScale
+	});
 
 	const char* tree1FolderPath = "assets/tree1-red/";
 	const char* tree1FileName = "tree1.obj";
