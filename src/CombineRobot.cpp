@@ -59,27 +59,40 @@ void CombineRobot::update(){
 	if (!driveUp && driveDown) drive(-2);
 	if (turnLeft && !turnRight) turn(-2);
 	if (!turnLeft && turnRight) turn(2);
-	//std::cout << rotate.y << '\n';
-	self->pos = pos;
 }
+
+void renderAxe(bool x, bool y, bool z) {
+	if (x) {
+		// xAxis
+		glBegin(GL_LINES);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3d(0, 0, 0);
+		glVertex3d(5000, 0, 0);
+		glEnd();
+	}
+	if (y) {
+		// yAxis
+		glBegin(GL_LINES);
+		glColor3f(0.86f, 0.86f, 0.86f);
+		glVertex3d(0, 0, 0);
+		glVertex3d(0, 5000, 0);
+		glEnd();
+	}
+	if (z) {
+		// zAxis
+		glBegin(GL_LINES);
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glVertex3d(0, 0, 0);
+		glVertex3d(0, 0, 5000);
+		glEnd();
+	}
+}
+
 
 void CombineRobot::render() {
 	self->renderAxe(1, 0, 1);
-	glPushMatrix();
-
-	glTranslated(posBB.x,posBB.y,posBB.z);
-	glPushMatrix();
-	glRotated(-rotate.y, 0, 1, 0);
-
 	
-
-	//Vec3 shiftPos = pos - posBB;
-	//glTranslated(shiftPos.x, shiftPos.y, shiftPos.z);
-	glTranslated(pos.x, pos.y, pos.z);
-
-	glPopMatrix();
-	
-	glTranslated(-pos.x, -pos.y, -pos.z);
+	glPushMatrix();
 
 	self->render();
 	
