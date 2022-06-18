@@ -26,6 +26,7 @@ CombineRobot::CombineRobot(double scale, Vec3 pos) {
 	speed = 0;
 	facing = { 0,0,1 };
 	wheelAngle = 0;
+	this->scale = scale;
 }
 
 CombineRobot::~CombineRobot() {
@@ -158,6 +159,7 @@ void CombineRobot::turn(double v) {
 
 void CombineRobot::updatePhysics()
 {
+	posBB = pos;
 	pos = {
 		pos.x + speed * facing.x,
 		pos.y,

@@ -147,8 +147,6 @@ void mouseKey(int key, int state, int x, int y) {
 }
 
 void renderDisplay(void) {
-	app->update();
-	events->reset();
 	
 	// Clear Color and Depth Buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -156,13 +154,16 @@ void renderDisplay(void) {
 	// Reset transformations
 	glLoadIdentity();
 
+	glPushMatrix();
+
+	app->update();
+	events->reset();
+
 	app->camera->renderLookAt();
-
-	//coordinateAxis(1, 1, 1);
-
-	//glPushMatrix();
+	
 	app->render();
-	//glPopMatrix();
+
+	glPopMatrix();
 
 	glutSwapBuffers();
 }

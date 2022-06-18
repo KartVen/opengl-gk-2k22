@@ -123,7 +123,10 @@ void Camera::updateDir(int x, int y)
 	if (yLock) {
 		if (alphaY < yBorder) alphaY = yBorder;
 		const double Y_MAX_BORDER = M_PI_2 - 0.25;
-		if (alphaY > Y_MAX_BORDER) alphaY = Y_MAX_BORDER;
+		if (alphaY > Y_MAX_BORDER) {
+			alphaY = Y_MAX_BORDER;
+			deltaAngle.y -= alphaY - Y_MAX_BORDER;
+		}
 	}
 
 	dir.x = cos(alphaY) * cos(alphaX) * fov;

@@ -32,6 +32,8 @@ void App::update()
 	}
 
 	combineRobot->update();
+
+	camera->pos = combineRobot->pos * combineRobot->scale;
 	camera->update();
 }
 

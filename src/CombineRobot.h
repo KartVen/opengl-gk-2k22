@@ -26,6 +26,7 @@ public:
     Vec3 size;
     Vec3 facing;
     double speed;
+    double scale;
 private:
     int called = 0;
     bool mode = 1;
