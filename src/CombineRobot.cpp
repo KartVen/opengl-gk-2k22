@@ -120,7 +120,7 @@ void CombineRobot::render() {
 	
 	glPushMatrix();
 
-	glTranslated(pos.x * self->scale, pos.y * self->scale, pos.z * self->scale);
+	glTranslated(relPos.x, relPos.y, relPos.z);
 	glRotated(rotate.y, 0, 1, 0);
 
 	self->render();
@@ -130,6 +130,7 @@ void CombineRobot::render() {
 	glPushMatrix();
 
 	glTranslated(1.2569 * self->scale, 0 * self->scale, -3.5 * self->scale);
+	glRotated(speed, 1, 0, 0);
 	glRotated(wheelAngle, 0, 1, 0);
 	leftBackWheel->render();
 	
@@ -137,6 +138,7 @@ void CombineRobot::render() {
 	glPushMatrix();
 
 	glTranslated(-1.2569 * self->scale, 0 * self->scale, -3.5 * self->scale);
+	glRotated(speed, 1, 0, 0);
 	glRotated(wheelAngle, 0, 1, 0);
 	rightBackWheel->render();
 	
@@ -165,6 +167,7 @@ void CombineRobot::updatePhysics()
 		pos.y,
 		pos.z + speed * facing.z,
 	};
+	relPos = pos * scale;
 
 	double friction = .025;
 

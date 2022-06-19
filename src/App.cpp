@@ -33,12 +33,14 @@ void App::update()
 
 	combineRobot->update();
 
-	camera->pos = combineRobot->pos * combineRobot->scale;
+	if(CAM_FOCUS_ROBOT) camera->pos = combineRobot->relPos;
 	camera->update();
 }
 
 void App::render()
 {
+	camera->renderLookAt();
+
 	terrain->render();
 	combineRobot->render();
 }

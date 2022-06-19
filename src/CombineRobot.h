@@ -21,6 +21,7 @@ public:
     double wheelAngle;
 public:
     Vec3 pos;
+    Vec3 relPos;
     Vec3 posBB; // posBackBuffer;
     Rotation rotate;
     Vec3 size;

@@ -158,8 +158,6 @@ void renderDisplay(void) {
 
 	app->update();
 	events->reset();
-
-	app->camera->renderLookAt();
 	
 	app->render();
 
