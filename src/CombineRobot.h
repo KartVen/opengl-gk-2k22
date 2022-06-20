@@ -13,10 +13,10 @@ private:
     Events* events;
 private:
     Model* self;
-    Wheel2* leftFrontWheel;
-    Wheel2* rightFrontWheel;
-    Wheel2* leftBackWheel;
-    Wheel2* rightBackWheel;
+    Model* leftFrontWheel;
+    Model* rightFrontWheel;
+    Model* leftBackWheel;
+    Model* rightBackWheel;
 public:
     double wheelAngle;
 public:

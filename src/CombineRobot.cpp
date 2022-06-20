@@ -14,13 +14,13 @@ CombineRobot::CombineRobot(double scale, Vec3 pos) {
 
 	double scaleWheel = self->scale;
 
-	leftFrontWheel = new Wheel2(combineAssetsPath + "WheelFrontLeft/", "WheelFrontLeft.obj", scaleWheel, { 0,0,0 });
-	rightFrontWheel = new Wheel2(combineAssetsPath + "WheelFrontRight/", "WheelFrontRight.obj", scaleWheel, { 0,0,0 });
-	leftBackWheel = new Wheel2(combineAssetsPath + "WheelRearLeft/", "WheelRearLeft.obj", scaleWheel, { 0,0,0 });
-	rightBackWheel = new Wheel2(combineAssetsPath + "WheelRearRight/", "WheelRearRight.obj", scaleWheel, { 0,0,0 });
+	leftFrontWheel = new Model(combineAssetsPath + "WheelFrontLeft/", "WheelFrontLeft.obj", scaleWheel, { 0,0,0 });
+	rightFrontWheel = new Model(combineAssetsPath + "WheelFrontRight/", "WheelFrontRight.obj", scaleWheel, { 0,0,0 });
+	leftBackWheel = new Model(combineAssetsPath + "WheelRearLeft/", "WheelRearLeft.obj", scaleWheel, { 0,0,0 });
+	rightBackWheel = new Model(combineAssetsPath + "WheelRearRight/", "WheelRearRight.obj", scaleWheel, { 0,0,0 });
 
-	leftBackWheel->setModelAxePos({ -1.2569,0,3.5 });
-	rightBackWheel->setModelAxePos({ 1.2569,0,3.5 });
+	leftBackWheel->modelAxePos = { -1.2569,0,3.5 };
+	rightBackWheel->modelAxePos = { 1.2569,0,3.5 };
 
 	size = { 0,0,0 };
 	speed = 0;

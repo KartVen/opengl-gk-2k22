@@ -147,7 +147,7 @@ void mouseKey(int key, int state, int x, int y) {
 }
 
 void renderDisplay(void) {
-	
+
 	// Clear Color and Depth Buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
